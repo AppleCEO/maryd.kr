@@ -7,6 +7,7 @@
             body {
                 margin: 0;
                 padding: 0;
+                height: 2000px; /* 스크롤할 때를 테스트하기 위해 높이 늘림 */
             }
 
             .top-band {
@@ -39,7 +40,8 @@
                 position: absolute;
                 top: 50%;            
                 transform: translateY(-50%);
-                right: 80px;         
+                right: 80px;
+                transition: transform 0.1s ease-in-out;
             }
             .where-imagination-becomes-reality {
                 text-align: center;
@@ -49,6 +51,7 @@
                 position: absolute;
                 left: 80px;
                 top: calc(50% - (42px + 48.5px)); /* 42픽셀 상단 + dgodic 이미지의 높이의 반  */
+                transition: transform 0.1s ease-in-out;
             }
         </style>
     </head>
@@ -70,5 +73,16 @@
         <div class="where-imagination-becomes-reality">
             <img src="images/Where imagination becomes reality.png" alt="Where imagination becomes reality" class="where-imagination-becomes-reality-image">
         </div>
+        <script>
+            const dgodicImage = document.querySelector('.dgodic-image');
+            const dcursiveImage = document.querySelector('.dcursive-image');
+
+            window.addEventListener('scroll', () => {
+                const scrollY = window.scrollY;
+                const moveAmount = scrollY * 3;
+                dcursiveImage.style.transform = `translateX(${moveAmount}px)`;
+                dgodicImage.style.transform = `translateY(-50%) translateX(-${moveAmount}px)`;
+            });
+        </script>
     </body>
 </html>
