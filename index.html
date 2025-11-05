@@ -29,14 +29,26 @@
             .video-thumbnail {
                 text-align: center;
                 margin-top: 100px;
+                position: relative; 
             }
             .video-thumbnail-image {
                 width: 525px;
                 height: 345px;
             }
+            .dgodic-image {
+                position: absolute;
+                top: 50%;            
+                transform: translateY(-50%);
+                right: 80px;         
+            }
             .where-imagination-becomes-reality {
                 text-align: center;
-                margin-top: 100px;
+                margin-top: 100px;                
+            }
+            .dcursive-image {
+                position: absolute;
+                left: 80px;
+                top: calc(50% - (42px + 48.5px)); /* 42픽셀 상단 + dgodic 이미지의 높이의 반  */
             }
         </style>
     </head>
@@ -51,7 +63,9 @@
             <img src="images/Where Jewelry Meets Meaning.png" alt="Where Jewelry Meets Meaning" class="where-jewelry-meets-meaning-image">
         </div>
         <div class="video-thumbnail">
+            <img src="images/DCursive.png" alt="DCursive" class="dcursive-image">
             <img src="images/videoThumbnail.png" alt="videoThumbnail" class="video-thumbnail-image">
+            <img src="images/DGodic.png" alt="DGodic" class="dgodic-image">
         </div>
         <div class="where-imagination-becomes-reality">
             <img src="images/Where imagination becomes reality.png" alt="Where imagination becomes reality" class="where-imagination-becomes-reality-image">
