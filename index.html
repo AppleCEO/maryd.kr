@@ -70,6 +70,36 @@
                 top: calc(50% - (42px + 48.5px)); /* 42픽셀 상단 + dgodic 이미지의 높이의 반  */
                 transition: transform 0.1s ease-in-out, opacity 0.1s ease-in-out;
             }
+            
+            .new-section {
+                position: relative;
+                height: 1307px;
+                background: #662423;
+                text-align: center;
+                padding-top: 515px;
+                box-sizing: border-box;
+                overflow: hidden;
+            }
+
+            .new-section-content {
+                position: relative;
+                z-index: 2;
+            }
+
+            .parallax-image {
+                position: absolute;
+                z-index: 1;
+                transition: transform 0.1s ease-out;
+                filter: grayscale(100%) brightness(0.7) sepia(0.3) hue-rotate(-10deg);
+                opacity: 0.8;
+            }
+            
+            .parallax-1 { width: 200px; height: 200px; top: 10%; left: 5%; background-image: url('images/1.png'); background-size: cover; }
+            .parallax-2 { width: 300px; height: 300px; top: 0%; right: 5%; background-image: url('images/2.png'); background-size: cover; }
+            .parallax-3 { width: 250px; height: 350px; bottom: 20%; left: 10%; background-image: url('images/3.png'); background-size: cover; }
+            .parallax-4 { width: 280px; height: 400px; bottom: 5%; right: 10%; background-image: url('images/4.png'); background-size: cover; }
+            .parallax-5 { width: 350px; height: 250px; top: -10%; left: 20%; background-image: url('images/5.png'); background-size: cover; }
+            .parallax-6 { width: 320px; height: 220px; top: 30%; right: -5%; background-image: url('images/6.png'); background-size: cover; }
         </style>
     </head>
     <body>
@@ -88,19 +118,31 @@
             <img src="images/DGodic.png" alt="DGodic" class="dgodic-image">
         </div>
         <div class="where-imagination-becomes-reality">
-            <!-- <img src="images/DCursive.png" alt="DCursive" class="dcursive-image"> -->
             <img src="images/Where imagination becomes reality.png" alt="Where imagination becomes reality" class="where-imagination-becomes-reality-image">
-            <!-- <img src="images/DGodic.png" alt="DGodic" class="dgodic-image"> -->
         </div>
-        <div class="new-section" style="height: 1307px; background: #662423; text-align: center; padding-top: 515px; box-sizing: border-box;">
-            <div><img src="images/We offer an experience beyond jewelry..png" alt="We offer an experience beyond jewelry."></div>
-            <div style="margin-top: 20px;"><img src="images/메리드는 단순히 주얼리를 판매하지 않습니다 상상을 현실로 만드는 경험….png" alt="메리드는 단순히 주얼리를 판매하지 않습니다 상상을 현실로 만드는 경험"></div>
+        
+        <div class="new-section">
+            <div class="parallax-image parallax-1"></div>
+            <div class="parallax-image parallax-2"></div>
+            <div class="parallax-image parallax-3"></div>
+            <div class="parallax-image parallax-4"></div>
+            <div class="parallax-image parallax-5"></div>
+            <div class="parallax-image parallax-6"></div>
+            
+            <div class="new-section-content">
+                <div><img src="images/We offer an experience beyond jewelry..png" alt="We offer an experience beyond jewelry."></div>
+                <div style="margin-top: 20px;"><img src="images/메리드는 단순히 주얼리를 판매하지 않습니다 상상을 현실로 만드는 경험….png" alt="메리드는 단순히 주얼리를 판매하지 않습니다 상상을 현실로 만드는 경험"></div>
+            </div>
         </div>
+        
         <script>
             const dgodicImage = document.querySelector('.dgodic-image');
             const dcursiveImage = document.querySelector('.dcursive-image');
             const video = document.querySelector('.video-thumbnail-image');
             const videoContainer = document.querySelector('.video-thumbnail');
+            
+            const parallaxImages = document.querySelectorAll('.parallax-image');
+            const parallaxSpeedFactors = [0.3, 0.6, 0.15, -0.3, 0.45, -0.15];
 
             const dgodicInitialRect = dgodicImage.getBoundingClientRect();
             const dcursiveInitialRect = dcursiveImage.getBoundingClientRect();
@@ -122,8 +164,7 @@
             window.addEventListener('scroll', () => {
                 const scrollY = window.scrollY;
                 const moveAmount = scrollY * 1.5;
-
-                // Image animation
+                
                 if (moveAmount >= meetingMoveAmount) {
                     dcursiveImage.style.transform = `translateX(${meetingMoveAmount}px)`;
                     dgodicImage.style.transform = `translateY(-50%) translateX(-${meetingMoveAmount}px)`;
@@ -160,7 +201,6 @@
                     hasDisappeared = false;
                 }
 
-                // Video scaling
                 if (scrollY >= startScroll && scrollY <= endScroll) {
                     const scrollFraction = (scrollY - startScroll) / (endScroll - startScroll);
                     const scaleX = 1 + (finalScaleX - 1) * scrollFraction;
@@ -168,9 +208,15 @@
                     video.style.transform = `scaleX(${scaleX}) scaleY(${scaleY})`;
                 } else if (scrollY < startScroll) {
                     video.style.transform = 'scale(1)';
-                } else { // scrollY > endScroll
+                } else {
                     video.style.transform = `scaleX(${finalScaleX}) scaleY(${finalScaleY})`;
                 }
+                
+                parallaxImages.forEach((piece, index) => {
+                    const speed = parallaxSpeedFactors[index] || 0;
+                    const moveY = scrollY * speed;
+                    piece.style.transform = `translateY(${moveY}px)`;
+                });
             });
         </script>
     </body>
