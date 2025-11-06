@@ -53,6 +53,23 @@
                 top: calc(50% - (42px + 48.5px)); /* 42픽셀 상단 + dgodic 이미지의 높이의 반  */
                 transition: transform 0.1s ease-in-out, opacity 0.1s ease-in-out;
             }
+            .dgodic-image {
+                position: absolute;
+                top: 50%;            
+                transform: translateY(-50%);
+                right: 80px;
+                transition: transform 0.1s ease-in-out, opacity 0.1s ease-in-out;
+            }
+            .where-imagination-becomes-reality {
+                text-align: center;
+                margin-top: 100px;                
+            }
+            .dcursive-image {
+                position: absolute;
+                left: 80px;
+                top: calc(50% - (42px + 48.5px)); /* 42픽셀 상단 + dgodic 이미지의 높이의 반  */
+                transition: transform 0.1s ease-in-out, opacity 0.1s ease-in-out;
+            }
         </style>
     </head>
     <body>
@@ -71,7 +88,9 @@
             <img src="images/DGodic.png" alt="DGodic" class="dgodic-image">
         </div>
         <div class="where-imagination-becomes-reality">
+            <!-- <img src="images/DCursive.png" alt="DCursive" class="dcursive-image"> -->
             <img src="images/Where imagination becomes reality.png" alt="Where imagination becomes reality" class="where-imagination-becomes-reality-image">
+            <!-- <img src="images/DGodic.png" alt="DGodic" class="dgodic-image"> -->
         </div>
         <script>
             const dgodicImage = document.querySelector('.dgodic-image');
@@ -80,22 +99,56 @@
             const dgodicInitialRect = dgodicImage.getBoundingClientRect();
             const dcursiveInitialRect = dcursiveImage.getBoundingClientRect();
             const initialGap = dgodicInitialRect.left - dcursiveInitialRect.right;
-            const meetingMoveAmount = initialGap / 2 - 48;
+            const meetingMoveAmount = initialGap / 2 - 50;
+
+            let disappearanceTimeout = null;
+            let hasMetAndWaiting = false;
+            let hasDisappeared = false; // New state variable
 
             window.addEventListener('scroll', () => {
                 const scrollY = window.scrollY;
                 const moveAmount = scrollY * 1.5;
 
                 if (moveAmount >= meetingMoveAmount) {
+                    // Images have met or passed the meeting point
                     dcursiveImage.style.transform = `translateX(${meetingMoveAmount}px)`;
                     dgodicImage.style.transform = `translateY(-50%) translateX(-${meetingMoveAmount}px)`;
-                    dgodicImage.style.opacity = '0';
-                    dcursiveImage.style.opacity = '0';
+                    
+                    if (!hasMetAndWaiting && !hasDisappeared) { // Only trigger timeout if not already waiting or disappeared
+                        hasMetAndWaiting = true;
+                        // Clear any existing timeout to prevent multiple triggers
+                        if (disappearanceTimeout) {
+                            clearTimeout(disappearanceTimeout);
+                        }
+                        // Set a timeout to make them disappear after 1 second
+                        disappearanceTimeout = setTimeout(() => {
+                            dgodicImage.style.opacity = '0';
+                            dcursiveImage.style.opacity = '0';
+                            hasDisappeared = true; // Mark as disappeared
+                            hasMetAndWaiting = false; // Reset waiting state
+                        }, 1000); // 1000 milliseconds = 1 second
+                    }
+                    
+                    // Keep them visible during the waiting period, unless they have already disappeared
+                    if (!hasDisappeared) {
+                        dgodicImage.style.opacity = '1';
+                        dcursiveImage.style.opacity = '1';
+                    }
+
                 } else {
+                    // Images are not at the meeting point yet
                     dcursiveImage.style.transform = `translateX(${moveAmount}px)`;
                     dgodicImage.style.transform = `translateY(-50%) translateX(-${moveAmount}px)`;
                     dgodicImage.style.opacity = '1';
                     dcursiveImage.style.opacity = '1';
+
+                    // If they were waiting to disappear or had disappeared, clear the timeout and reset state
+                    if (disappearanceTimeout) {
+                        clearTimeout(disappearanceTimeout);
+                        disappearanceTimeout = null;
+                    }
+                    hasMetAndWaiting = false;
+                    hasDisappeared = false; // Reset disappeared state
                 }
             });
         </script>
