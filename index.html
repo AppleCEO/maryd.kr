@@ -7,7 +7,7 @@
             body {
                 margin: 0;
                 padding: 0;
-                height: 2000px; /* 스크롤할 때를 테스트하기 위해 높이 늘림 */
+                height: 300vh;
             }
 
             .top-band {
@@ -35,6 +35,7 @@
             .video-thumbnail-image {
                 width: 525px;
                 height: 345px;
+                transition: transform 0.1s ease-in-out;
             }
             .dgodic-image {
                 position: absolute;
@@ -83,8 +84,8 @@
             <img src="images/Where Jewelry Meets Meaning.png" alt="Where Jewelry Meets Meaning" class="where-jewelry-meets-meaning-image">
         </div>
         <div class="video-thumbnail">
-            <img src="images/DCursive.png" alt="DCursive" class="dcursive-image">
             <video src="images/video.mp4" autoplay loop muted playsinline class="video-thumbnail-image"></video>
+            <img src="images/DCursive.png" alt="DCursive" class="dcursive-image">
             <img src="images/DGodic.png" alt="DGodic" class="dgodic-image">
         </div>
         <div class="where-imagination-becomes-reality">
@@ -95,6 +96,8 @@
         <script>
             const dgodicImage = document.querySelector('.dgodic-image');
             const dcursiveImage = document.querySelector('.dcursive-image');
+            const video = document.querySelector('.video-thumbnail-image');
+            const videoContainer = document.querySelector('.video-thumbnail');
 
             const dgodicInitialRect = dgodicImage.getBoundingClientRect();
             const dcursiveInitialRect = dcursiveImage.getBoundingClientRect();
@@ -103,52 +106,67 @@
 
             let disappearanceTimeout = null;
             let hasMetAndWaiting = false;
-            let hasDisappeared = false; // New state variable
+            let hasDisappeared = false;
+
+            const endScroll = meetingMoveAmount / 1.5;
+            const videoContainerTop = videoContainer.offsetTop;
+            const startScroll = videoContainerTop - window.innerHeight / 2; // Start a bit later
+
+            const finalScaleX = window.innerWidth / 525;
+            const finalScaleY = window.innerHeight / 345;
+
 
             window.addEventListener('scroll', () => {
                 const scrollY = window.scrollY;
                 const moveAmount = scrollY * 1.5;
 
+                // Image animation
                 if (moveAmount >= meetingMoveAmount) {
-                    // Images have met or passed the meeting point
                     dcursiveImage.style.transform = `translateX(${meetingMoveAmount}px)`;
                     dgodicImage.style.transform = `translateY(-50%) translateX(-${meetingMoveAmount}px)`;
                     
-                    if (!hasMetAndWaiting && !hasDisappeared) { // Only trigger timeout if not already waiting or disappeared
+                    if (!hasMetAndWaiting && !hasDisappeared) {
                         hasMetAndWaiting = true;
-                        // Clear any existing timeout to prevent multiple triggers
                         if (disappearanceTimeout) {
                             clearTimeout(disappearanceTimeout);
                         }
-                        // Set a timeout to make them disappear after 1 second
                         disappearanceTimeout = setTimeout(() => {
                             dgodicImage.style.opacity = '0';
                             dcursiveImage.style.opacity = '0';
-                            hasDisappeared = true; // Mark as disappeared
-                            hasMetAndWaiting = false; // Reset waiting state
-                        }, 1000); // 1000 milliseconds = 1 second
+                            hasDisappeared = true;
+                            hasMetAndWaiting = false;
+                        }, 1000);
                     }
                     
-                    // Keep them visible during the waiting period, unless they have already disappeared
                     if (!hasDisappeared) {
                         dgodicImage.style.opacity = '1';
                         dcursiveImage.style.opacity = '1';
                     }
 
                 } else {
-                    // Images are not at the meeting point yet
                     dcursiveImage.style.transform = `translateX(${moveAmount}px)`;
                     dgodicImage.style.transform = `translateY(-50%) translateX(-${moveAmount}px)`;
                     dgodicImage.style.opacity = '1';
                     dcursiveImage.style.opacity = '1';
 
-                    // If they were waiting to disappear or had disappeared, clear the timeout and reset state
                     if (disappearanceTimeout) {
                         clearTimeout(disappearanceTimeout);
                         disappearanceTimeout = null;
                     }
                     hasMetAndWaiting = false;
-                    hasDisappeared = false; // Reset disappeared state
+                    hasDisappeared = false;
+                }
+
+                // Video scaling
+                if (scrollY >= startScroll && scrollY <= endScroll) {
+                    const scrollFraction = (scrollY - startScroll) / (endScroll - startScroll);
+                    const scaleX = 1 + (finalScaleX - 1) * scrollFraction;
+                    const scaleY = 1 + (finalScaleY - 1) * scrollFraction;
+                    video.style.transform = `scaleX(${scaleX}) scaleY(${scaleY})`;
+                } else if (scrollY < startScroll) {
+                    video.style.transform = 'scale(1)';
+                } else { // scrollY > endScroll
+                    video.style.transform = `scaleX(${finalScaleX}) scaleY(${finalScaleY})`;
                 }
             });
         </script>
