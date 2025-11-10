@@ -63,12 +63,13 @@
             }
             .video-thumbnail {
                 text-align: center;
-                margin-top: 100px;
+                margin-top: 90px;
                 position: relative; 
+                z-index: 100;
             }
             .video-thumbnail-image {
-                width: 525px;
-                height: 345px;
+                width: 640px;
+                height: 360px;
                 transition: transform 0.1s ease-in-out;
             }
             .dgodic-image {
@@ -355,17 +356,18 @@
             let hasMetAndWaiting = false;
             let hasDisappeared = false;
 
-            const endScroll = meetingMoveAmount / 1.5;
+            const endScroll = meetingMoveAmount / 2.5;
+            
             const videoContainerTop = videoContainer.offsetTop;
-            const startScroll = videoContainerTop - window.innerHeight / 2; // Start a bit later
+            const startScroll = videoContainerTop - window.innerHeight / 2;
 
-            const finalScaleX = window.innerWidth / 525;
-            const finalScaleY = window.innerHeight / 345;
+            const finalScaleX = window.innerWidth / 640;
+            const finalScaleY = window.innerHeight / 360;
 
 
             window.addEventListener('scroll', () => {
                 const scrollY = window.scrollY;
-                const moveAmount = scrollY * 1.5;
+                const moveAmount = scrollY * 2.5;
                 
                 if (moveAmount >= meetingMoveAmount) {
                     dcursiveImage.style.transform = `translateX(${meetingMoveAmount}px)`;
