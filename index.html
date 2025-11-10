@@ -34,11 +34,10 @@
                 cursor: pointer;
                 text-decoration: none;
             }
-
             
             .lets-maryd {
                 width: 161px;
-                height: 20px;
+                height: 18px;
             }
             .maryd-logo {
                 text-align: center;
@@ -51,8 +50,8 @@
             .video-thumbnail {
                 text-align: center;
                 margin-top: 90px;
-                position: relative; 
-                z-index: 100;
+                position: relative;
+                z-index: 3;
             }
             .video-thumbnail-image {
                 width: 640px;
@@ -62,13 +61,17 @@
             .dgodic-image {
                 position: absolute;
                 top: 50%;            
-                transform: translateY(-50%);
                 right: 80px;
                 transition: transform 0.1s ease-in-out, opacity 0.1s ease-in-out;
             }
+            .dgodic-text {
+                position: absolute;
+                top: calc(50% + 55px);
+                right: 80px;
+            }
             .where-imagination-becomes-reality {
                 text-align: center;
-                margin-top: 100px;                
+                margin-top: 100px;              
             }
             .dcursive-image {
                 position: absolute;
@@ -76,12 +79,20 @@
                 top: calc(50% - (42px + 48.5px)); /* 42픽셀 상단 + dgodic 이미지의 높이의 반  */
                 transition: transform 0.1s ease-in-out, opacity 0.1s ease-in-out;
             }
+            .dcursive-text {
+                position: absolute;
+                left: 80px;
+                top: calc(50% + 55px);
+            }
             .dgodic-image {
                 position: absolute;
                 top: 50%;            
                 transform: translateY(-50%);
                 right: 80px;
                 transition: transform 0.1s ease-in-out, opacity 0.1s ease-in-out;
+            }
+            .dgodic-text {
+                
             }
             .where-imagination-becomes-reality {
                 text-align: center;
@@ -197,7 +208,6 @@
                 position: absolute;
                 top: 991px;
                 left: 970px;
-                z-index: 10;
                 display: block;
                 width: 337px;
                 height: 65px;
@@ -495,9 +505,13 @@
             <img src="images/Where Jewelry Meets Meaning.png" alt="Where Jewelry Meets Meaning" class="where-jewelry-meets-meaning-image">
         </div>
         <div class="video-thumbnail">
+            <img src="images/What you imagine,.png" class="dcursive-text">
+            <img src="images/we bring to life..png" class="dgodic-text">
             <video src="images/video.mp4" autoplay loop muted playsinline class="video-thumbnail-image"></video>
-            <img src="images/DCursive.png" alt="DCursive" class="dcursive-image">
-            <img src="images/DGodic.png" alt="DGodic" class="dgodic-image">
+            <img src="images/DCursive.png" class="dcursive-image">
+            
+            <img src="images/DGodic.png" class="dgodic-image">
+            
         </div>
         <div class="where-imagination-becomes-reality">
             <img src="images/Where imagination becomes reality.png" alt="Where imagination becomes reality" class="where-imagination-becomes-reality-image">
@@ -540,7 +554,9 @@
         
         <script>
             const dgodicImage = document.querySelector('.dgodic-image');
+            const dgodicText = document.querySelector('.dgodic-text');
             const dcursiveImage = document.querySelector('.dcursive-image');
+            const dcursiveText = document.querySelector('.dcursive-text');
             const video = document.querySelector('.video-thumbnail-image');
             const videoContainer = document.querySelector('.video-thumbnail');
             
@@ -585,7 +601,9 @@
                         }
                         disappearanceTimeout = setTimeout(() => {
                             dgodicImage.style.opacity = '0';
+                            dgodicText.style.opacity = '0';
                             dcursiveImage.style.opacity = '0';
+                            dcursiveText.style.opacity = '0';
                             hasDisappeared = true;
                             hasMetAndWaiting = false;
                         }, 1000);
@@ -593,14 +611,18 @@
                     
                     if (!hasDisappeared) {
                         dgodicImage.style.opacity = '1';
+                        dgodicText.style.opacity = '1';
                         dcursiveImage.style.opacity = '1';
+                        dcursiveText.style.opacity = '1';
                     }
 
                 } else {
                     dcursiveImage.style.transform = `translateX(${moveAmount}px)`;
                     dgodicImage.style.transform = `translateY(-50%) translateX(-${moveAmount}px)`;
                     dgodicImage.style.opacity = '1';
+                    dgodicText.style.opacity = '1';
                     dcursiveImage.style.opacity = '1';
+                    dcursiveText.style.opacity = '1';
 
                     if (disappearanceTimeout) {
                         clearTimeout(disappearanceTimeout);
