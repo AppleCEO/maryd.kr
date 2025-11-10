@@ -100,6 +100,133 @@
             .parallax-4 { width: 280px; height: 400px; bottom: 5%; right: 10%; background-image: url('images/4.png'); background-size: cover; }
             .parallax-5 { width: 350px; height: 250px; top: -10%; left: 20%; background-image: url('images/5.png'); background-size: cover; }
             .parallax-6 { width: 320px; height: 220px; top: 30%; right: -5%; background-image: url('images/6.png'); background-size: cover; }
+
+            .last-section {
+                position: relative;
+                height: 1162px;
+                background: #FEFCEC;
+            }
+
+            .last-image {
+                position: absolute;
+                top: 105px;
+                left: 80px;
+            }
+
+            .we-offer-an-experience-beyond-jewelry {
+                position: absolute;
+                top: 105px;
+                right: 79px;
+            }
+
+            .last-section-text {
+                position: absolute;
+                top: 794px;
+                left: 970px;
+                text-align: left;
+                max-width: 800px; 
+
+                font-family: 'Pretendard', sans-serif;
+                font-weight: 500;
+                font-style: normal;
+                font-size: 28px;
+                line-height: 1.5;
+
+                letter-spacing: 0;
+                text-transform: uppercase;
+                color: #662423;
+            }
+
+            .check-services-button {
+                position: absolute;
+                top: 991px;
+                left: 970px;
+                z-index: 10;
+                display: block;
+            }
+
+            .check-services-button img {
+                display: block;
+                width: auto;
+                height: auto;
+            }
+
+            .bottom-band {
+                width: 100%;
+                height: 248px;
+                background-color: #662423;
+                position: relative;
+            }
+
+            .bottom-logo {
+                position: absolute;
+                left: 80px;
+                top: 50%;
+                transform: translateY(-50%);
+            }
+
+            .bottom-section-text {
+                position: absolute;
+                top: 95px;
+                left: 377px; 
+                text-align: left;
+                max-width: 800px;
+
+                font-family: 'Pretendard', sans-serif;
+                font-weight: 500;
+                font-style: normal;
+                font-size: 25px;
+                line-height: 1.3;
+
+                letter-spacing: 0;
+                text-transform: uppercase;
+                color: #FEFCEC;
+            }
+
+            .youtube-button {
+                position: absolute;
+                right: 57px;
+                top: 50%;
+                transform: translateY(-50%);
+                width: 221px;
+                height: 51px;
+                background-color: #FEFCEC;
+                border-radius: 51.5px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                border: none;
+                cursor: pointer;
+            }
+
+            .youtube-button img {
+                max-width: 100%;
+                max-height: 100%;
+                display: block;
+            }
+
+            .instagram-button {
+                position: absolute;
+                right: 305px; /* 57px (YouTube right) + 27px (gap) + 221px (this button's width) */
+                top: 50%;
+                transform: translateY(-50%);
+                width: 221px;
+                height: 51px;
+                background-color: #FEFCEC;
+                border-radius: 51.5px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                border: none;
+                cursor: pointer;
+            }
+
+            .instagram-button img {
+                max-width: 100%;
+                max-height: 100%;
+                display: block;
+            }
+            
         </style>
     </head>
     <body>
@@ -133,6 +260,19 @@
                 <div><img src="images/We offer an experience beyond jewelry..png" alt="We offer an experience beyond jewelry."></div>
                 <div style="margin-top: 20px;"><img src="images/메리드는 단순히 주얼리를 판매하지 않습니다 상상을 현실로 만드는 경험….png" alt="메리드는 단순히 주얼리를 판매하지 않습니다 상상을 현실로 만드는 경험"></div>
             </div>
+        </div>
+        <div class="last-section">
+            <img src="images/lastImage.png" class="last-image">
+            <img src="images/We offer an experience beyond jewelry.-2.png" class="we-offer-an-experience-beyond-jewelry">
+            <div class="last-section-text">
+                여러분이 직접 디자인한 주얼리를 일상 속에서<br>
+                24시간, 365일 착용할 수 있는 형태로 정성스럽게 구현해드립니다.<br>
+                메리드의 모든 주얼리는 단순한 액세서리가 아니라,<br>
+                여러분만의 이야기를 담은 특별한 작품입니다.
+            </div>
+            <a href="#" class="check-services-button">
+                <img src="images/CHECK ALL SERVICES.png" alt="Check All Services">
+            </a>
         </div>
         
         <script>
@@ -219,5 +359,18 @@
                 });
             });
         </script>
+        <div class="bottom-band">
+            <img src="images/MARY'D BOTTOM.png" alt="MARY'D BOTTOM" class="bottom-logo">
+            <div class="bottom-section-text">
+                AI 기반 검색엔진과 매리드만의 독자적인 디자인 도구를 통해,<br>
+                세상에 단 하나뿐인 맞춤 주얼리 제작의 기쁨을 경험해보세요.
+            </div>
+            <a href="https://www.instagram.com/maryd.work/" target="_blank" class="instagram-button">
+                <img src="images/instagram.png" alt="Instagram">
+            </a>
+            <a href="https://www.youtube.com/@byMARYD" target="_blank" class="youtube-button">
+                <img src="images/youtube.png" alt="YouTube">
+            </a>
+        </div>
     </body>
 </html>
