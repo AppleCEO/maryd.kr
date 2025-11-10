@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MARYD - Custom Jewelry Request</title>
+    <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            background: #4B2323;
+            color: #fff;
+            font-family: 'Noto Sans KR', 'Noto Serif', -apple-system, Roboto, Helvetica, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            letter-spacing: 0.05em;
+        }
+        .container {
+            width: 100vw;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            box-sizing: border-box;
+        }
+        .logo-box {
+            margin-top: 48px;
+            margin-bottom: 32px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .logo-img {
+            width: 120px;
+            height: 120px;
+            object-fit: contain;
+            margin-bottom: 16px;
+        }
+        .request-form {
+            width: 100%;
+            max-width: 600px;
+            margin-bottom: 40px;
+            padding: 0 24px;
+        }
+        .request-form h1 {
+            font-size: 2rem;
+            font-weight: 400;
+            text-align: center;
+            margin-bottom: 16px;
+        }
+        .request-form p {
+            font-size: 1rem;
+            text-align: center;
+            margin-bottom: 32px;
+            line-height: 1.7;
+        }
+        .request-form textarea {
+            width: 100%;
+            min-height: 150px;
+            resize: vertical;
+            padding: 16px;
+            border-radius: 8px;
+            border: 1px solid #fff;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            font-size: 1rem;
+            font-family: inherit;
+            box-sizing: border-box;
+            margin-bottom: 24px;
+        }
+        .request-form textarea::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+        .submit-btn {
+            background: #fff;
+            border: 2px solid #fff;
+            color: #4B2323;
+            border-radius: 32px;
+            padding: 12px 36px;
+            font-size: 1.1rem;
+            font-family: inherit;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s;
+            display: block;
+            margin: 0 auto;
+        }
+        .submit-btn:hover {
+            background: transparent;
+            color: #fff;
+        }
+        .footer-desc {
+            color: #fff;
+            font-size: 1rem;
+            text-align: center;
+            margin-bottom: 24px;
+            margin-top: 24px;
+        }
+        .footer-bar {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            margin-bottom: 32px;
+            width: 100%;
+        }
+        .sns-bar {
+            display: flex;
+            gap: 16px;
+            margin-top: 8px;
+        }
+        .sns-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: box-shadow 0.2s;
+        }
+        .sns-icon:hover {
+            box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+        }
+        .sns-icon img {
+            width: 24px;
+            height: 24px;
+        }
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            margin-bottom: 32px;
+        }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        .form-group label {
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        .form-group input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #fff;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            font-size: 1rem;
+            font-family: inherit;
+            box-sizing: border-box;
+        }
+        .form-group input[type="text"]::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+        .submit-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        @media (max-width: 768px) {
+            .request-form h1 {
+                font-size: 1.5rem;
+            }
+            .request-form {
+                /* Removed margin */
+            }
+            .container {
+                padding: 0 16px;
+            }
+            .footer-bar .sns-bar {
+                /* Removed width and margin-right */
+            }
+        }
+            /* Chat UI */
+        .chat-wrapper { width: 100%; max-width: 600px; margin: 0 auto 24px; padding: 0 0; }
+        .messages { display: flex; flex-direction: column; gap: 10px; max-height: 50vh; overflow-y: auto; padding: 12px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.2); border-radius: 12px; }
+        .message { max-width: 80%; padding: 10px 14px; border-radius: 14px; line-height: 1.5; font-size: 0.95rem; word-break: break-word; }
+        .message.bot { background: rgba(255,255,255,0.12); color: #fff; align-self: flex-start; border-top-left-radius: 6px; }
+        .message.user { background: #fff; color: #4B2323; align-self: flex-end; border-top-right-radius: 6px; }
+        .input-row { display: flex; gap: 8px; margin-top: 12px; }
+        .input-row input { flex: 1; padding: 12px; border-radius: 24px; border: 1px solid #fff; background: rgba(255,255,255,0.1); color: #fff; font-size: 1rem; }
+        .input-row input::placeholder { color: rgba(255,255,255,0.6); }
+        .input-row button { background: #fff; color: #4B2323; border: none; border-radius: 24px; padding: 10px 16px; font-weight: 600; cursor: pointer; }
+        .message img { max-width: 220px; border-radius: 8px; display: block; }
+        @media (max-width: 768px) { .messages { max-height: 46vh; } .message img { max-width: 60vw; } }
+        .loading-placeholder {
+            background: #333;
+            animation: pulse 1.5s infinite ease-in-out;
+        }
+        @keyframes pulse {
+            0% { background-color: #333; }
+            50% { background-color: #444; }
+            100% { background-color: #333; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo-box">
+            <a href="index.html"><img src="images/headerLogo.png" alt="MARYD 로고" class="logo-img" /></a>
+        </div>
+
+        <div class="request-form">
+            <div class="chat-wrapper" id="chat">
+                <div class="messages" id="messages"></div>
+                <div class="input-row">
+                    <input id="chat-input" type="text" placeholder="메시지를 입력하세요" />
+                    <button id="chat-send" type="button">전송</button>
+                </div>
+            </div>
+            <h1>AI Custom Jewelry Design</h1>
+            <p>
+                아래 5가지 질문에 답변해주시면<br>
+                AI가 세상에 단 하나뿐인 액세서리 디자인을 제안해 드립니다.
+            </p>
+            <div class="form-grid" style="display:none;">
+                <div class="form-group">
+                    <label for="q1">어떤 종류의 액세서리를 원하시나요? (예: 반지, 목걸이, 귀걸이)</label>
+                    <input type="text" id="q1" name="q1" placeholder="예: 반지">
+                </div>
+                <div class="form-group">
+                    <label for="q2">주된 재료는 무엇으로 할까요? (예: 금, 은, 원석)</label>
+                    <input type="text" id="q2" name="q2" placeholder="예: 은">
+                </div>
+                <div class="form-group">
+                    <label for="q3">디자인의 핵심 포인트나 장식은 무엇인가요? (예: 탄생석, 특정 문양)</label>
+                    <input type="text" id="q3" name="q3" placeholder="예: 푸른 토파즈">
+                </div>
+                <div class="form-group">
+                    <label for="q4">전체적인 스타일은 어떤 느낌이었으면 하나요? (예: 심플, 화려, 빈티지)</label>
+                    <input type="text" id="q4" name="q4" placeholder="예: 심플하고 모던하게">
+                </div>
+                <div class="form-group">
+                    <label for="q5">디자인에 영감을 줄 만한 것이 있나요? (예: 좋아하는 영화, 특정 장소)</label>
+                    <input type="text" id="q5" name="q5" placeholder="예: 밤하늘의 별">
+                </div>
+            </div>
+            
+            <div id="loading" style="display: none; text-align: center; margin-top: 20px;">
+                
+            </div>
+            <div id="result-container" style="margin-top: 30px; display: none; text-align: center;">
+                <h3 id="result-title" style="margin-bottom: 16px;">AI가 생성한 디자인</h3>
+                <img id="result-image" src="" alt="AI가 생성한 주얼리 디자인 이미지" style="width: 100%; max-width: 512px; height: auto; aspect-ratio: 1 / 1; object-fit: contain; border-radius: 8px; background: #333; display: block; margin: 0 auto;">
+                <p id="result-text" style="font-size: 0.9rem; color: rgba(255,255,255,0.7); margin-top: 16px; white-space: pre-wrap; text-align: left; line-height: 1.7;"></p>
+                <div id="contact-form" style="margin-top: 20px; text-align:left; max-width: 512px; margin-left:auto; margin-right:auto; display:none;">
+                    <label style="display:block; margin-bottom:6px; color: rgba(255,255,255,0.9);">연락처</label>
+                    <input type="tel" id="contact" style="width:100%; max-width: 512px; padding:12px; border-radius:8px; border:1px solid #fff; background: rgba(255,255,255,0.1); color:#fff; margin-bottom:12px; box-sizing: border-box;"/>
+                    <label style="display:block; margin-bottom:6px; color: rgba(255,255,255,0.9);">추가 요청사항</label>
+                    <textarea id="notes" placeholder="사이즈, 예산, 납기 등 추가 요청사항을 적어주세요" style="width:100%; max-width: 512px; min-height:120px; padding:12px; border-radius:8px; border:1px solid #fff; background: rgba(255,255,255,0.1); color:#fff; box-sizing: border-box;"></textarea>
+                                         <button id="send-request" class="submit-btn" style="margin-top:14px;">요청하기</button>
+                 </div>
+
+            </div>
+        </div>
+
+        <div class="footer-desc">
+            AI 기반 검색엔진과 매리드만의 독자적인 디자인 도구를 통해, 세상에 단 하나뿐인 맞춤 주얼리 제작의 기쁨을 경험해보세요.
+        </div>
+        <div class="footer-bar" style="position:relative;">
+            <div style="width: 100%; text-align: center;">
+                <a href="index.html" style="display:inline-block;text-decoration:none;">
+                    <svg width="240" height="96" viewBox="0 0 240 96" style="display:block;" xmlns="http://www.w3.org/2000/svg">
+                        <polygon points="70,20 170,20 200,40 120,86 40,40" fill="none" stroke="#fff" stroke-width="2"/>
+                        <text x="120" y="50" text-anchor="middle" fill="#fff" font-size="18" font-family="'Noto Sans KR', 'Noto Serif', sans-serif" font-weight="500">Back to Home</text>
+                    </svg>
+                </a>
+            </div>
+            <div class="sns-bar" style="margin-top:8px; display:flex; align-self: flex-end; padding-right: 30px;">
+                <a href="https://www.instagram.com/maryd.work/" class="sns-icon" target="_blank" rel="noopener" title="Instagram">
+                    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" alt="Instagram" />
+                </a>
+                <a href="https://www.youtube.com/playlist?list=PLaWW74xLaCGXyNU0hH_qXIgQJiiAwdV5R" class="sns-icon" target="_blank" rel="noopener" title="YouTube">
+                    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/youtube.svg" alt="YouTube" />
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Google Apps Script Web App URL (설정 시 시트로 저장됩니다). 비워두면 mailto 폴백 사용
+        const SUBMIT_ENDPOINT = "https://script.google.com/macros/s/AKfycbzW0Mtto5z2z_Fp6iKT75mlytKn-z4j0V7qlQPMUo95upsl7onkhgbB3oI62NWcWDhhbg/exec";
+
+        function generateKoreanDescription({ q1, q2, q3, q4, q5 }) {
+        }
+
+        async function refineDescriptionWithChatGPT({ imageUrl, q1, q2, q3, q4, q5 }) {
+            // 서버가 있을 때만 시도 (GitHub Pages 등 정적 환경에서는 생략)
+            if (location.hostname.endsWith('github.io') || location.protocol === 'file:') return;
+            try {
+                const resp = await fetch('/describe-image', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ imageUrl, q1, q2, q3, q4, q5 })
+                });
+                if (!resp.ok) return;
+                const json = await resp.json();
+                if (json && json.description) {
+                    document.getElementById('result-text').innerText = json.description;
+                }
+            } catch {}
+        }
+
+        function generateKoreanDescription({ q1, q2, q3, q4, q5 }) {
+            const trimAll = (s) => (s || "").toString().trim();
+            q1 = trimAll(q1); q2 = trimAll(q2); q3 = trimAll(q3); q4 = trimAll(q4); q5 = trimAll(q5);
+
+            const openers = [
+                `${q2} 소재로 제작한 ${q1}`,
+                `${q1}에 ${q2}의 질감을 살린 디자인`,
+                `고급스러운 ${q2} ${q1}`
+            ];
+            const focuses = [
+                `${q3}를 핵심 포인트로`,
+                `${q3} 디테일을 중심으로`,
+                `${q3}의 아름다움을 강조하여`
+            ];
+            const styles = [
+                `${q4} 무드로`,
+                `${q4} 감성을 담아`,
+                `${q4} 분위기를 유지하며`
+            ];
+            const inspirations = [
+                `'${q5}'에서 영감을 받아`,
+                `'${q5}' 모티프를 반영해`,
+                `'${q5}'의 이미지로부터 착안해`
+            ];
+            const finishes = [
+                `라인과 비율을 균형 있게 조정해 손끝에서 느껴지는 완성도를 높였습니다.`,
+                `착용 시 편안함과 존재감이 조화를 이루도록 구조와 광택을 세심히 다듬었습니다.`,
+                `일상과 특별한 순간 모두에서 자연스럽게 빛나도록 표면 처리와 형태를 정교하게 설계했습니다.`
+            ];
+
+            const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
+            const parts = [
+                pick(openers),
+                pick(focuses),
+                pick(styles),
+                pick(inspirations)
+            ];
+            // 문장 구성
+            const sentence1 = `${parts[0]}으로, ${parts[1]} ${parts[2]} ${parts[3]} 디자인했습니다.`
+                .replace(/\s+/g, ' ').replace(/\s,/, ',');
+            const sentence2 = pick(finishes);
+
+            return `${sentence1} ${sentence2}`;
+        }
+        // Simple chat wizard questions
+        const chatQuestions = [
+            '어떤 종류의 액세서리를 원하시나요? (예: 반지, 목걸이, 귀걸이)',
+            '주된 재료는 무엇으로 할까요? (예: 금, 은, 원석)',
+            '디자인의 핵심 포인트나 장식은 무엇인가요? (예: 탄생석, 특정 문양)',
+            '전체적인 스타일은 어떤 느낌이었으면 하나요? (예: 심플, 화려, 빈티지)',
+            '디자인에 영감을 줄 만한 것이 있나요? (예: 좋아하는 영화, 특정 장소)'
+        ];
+        const chatAnswers = [];
+        const messagesEl = document.getElementById('messages');
+        const chatInput = document.getElementById('chat-input');
+        const chatSend = document.getElementById('chat-send');
+
+        function smoothScrollToLoading() {
+            const el = document.getElementById('loading');
+            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+        function smoothScrollToResult() {
+            const el = document.getElementById('result-container');
+            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function appendMessage(text, role = 'bot') {
+            const div = document.createElement('div');
+            div.className = `message ${role}`;
+            div.textContent = text;
+            messagesEl.appendChild(div);
+            messagesEl.scrollTop = messagesEl.scrollHeight;
+        }
+
+        async function askNext() {
+            const idx = chatAnswers.length;
+            if (idx < chatQuestions.length) {
+                appendMessage(chatQuestions[idx], 'bot');
+                chatInput.placeholder = '답변을 입력하세요';
+            } else {
+                // Fill form inputs and trigger generate
+                document.getElementById('q1').value = chatAnswers[0] || '';
+                document.getElementById('q2').value = chatAnswers[1] || '';
+                document.getElementById('q3').value = chatAnswers[2] || '';
+                document.getElementById('q4').value = chatAnswers[3] || '';
+                document.getElementById('q5').value = chatAnswers[4] || '';
+                appendMessage('답변 감사합니다. 디자인을 생성합니다...', 'bot');
+                // 로딩 표시로 스크롤 이동
+                document.getElementById('loading').style.display = 'block';
+                smoothScrollToLoading();
+                // 직접 생성 함수 트리거
+                await generateDesign();
+            }
+        }
+
+        async function submitChat() {
+            const value = chatInput.value.trim();
+            if (!value || chatInput.disabled) return;
+
+            appendMessage(value, 'user');
+            chatAnswers.push(value);
+            chatInput.value = '';
+            chatInput.disabled = true;
+            chatSend.disabled = true;
+
+            await new Promise(r => setTimeout(r, 300)); // 잠시 대기
+            await askNext();
+
+            // 마지막 질문이 아니면 다시 활성화
+            if (chatAnswers.length < chatQuestions.length) {
+                chatInput.disabled = false;
+                chatSend.disabled = false;
+                chatInput.focus();
+            }
+        }
+
+        chatSend.addEventListener('click', submitChat);
+        chatInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !chatInput.disabled) submitChat();
+        });
+
+        // Boot chat
+        appendMessage('안녕하세요! 몇 가지 질문에 답해주시면 맞춤 디자인을 만들어 드릴게요.', 'bot');
+        askNext();
+
+        async function sendRequestEmail() {
+            const contact = document.getElementById('contact').value.trim();
+            const notes = document.getElementById('notes').value.trim();
+            const imageUrl = document.getElementById('result-image').src;
+            const q1 = document.getElementById('q1').value;
+            const q2 = document.getElementById('q2').value;
+            const q3 = document.getElementById('q3').value;
+            const q4 = document.getElementById('q4').value;
+            const q5 = document.getElementById('q5').value;
+
+            if (!contact) {
+                alert('연락처를 입력해주세요.');
+                return;
+            }
+
+            const sendButton = document.getElementById('send-request');
+            sendButton.disabled = true;
+            sendButton.textContent = '전송 중...';
+
+            try {
+                // 1. Google Apps Script (SUBMIT_ENDPOINT)
+                if (SUBMIT_ENDPOINT) {
+                    console.log("Attempting to send via Google Apps Script...");
+                    // Google Apps Script는 보통 redirect 응답을 하므로, 'no-cors' 모드로 요청하고 응답을 기다리지 않습니다.
+                    await fetch(SUBMIT_ENDPOINT, {
+                        method: 'POST',
+                        mode: 'no-cors', 
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ contact, notes, imageUrl, q1, q2, q3, q4, q5 })
+                    });
+                    
+                    // 성공으로 간주하고 UI 처리
+                    sendButton.textContent = '요청 완료';
+                    alert('요청이 성공적으로 전송되었습니다.');
+                    return;
+                }
+
+                // 2. Local Node.js Server (개발 환경용)
+                if (!(location.hostname.endsWith('github.io') || location.protocol === 'file:')) {
+                    console.log("Attempting to send via local server...");
+                    const response = await fetch('/send-request', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ contact, notes, imageUrl, q1, q2, q3, q4, q5 })
+                    });
+
+                    if (response.ok) {
+                        sendButton.textContent = '요청 완료';
+                        alert('요청이 성공적으로 전송되었습니다.');
+                        return;
+                    } else {
+                        const errorData = await response.json();
+                        throw new Error(errorData.details || '로컬 서버에서 요청 처리에 실패했습니다.');
+                    }
+                }
+                
+                // 3. 모든 방법 실패 시 최종 폴백
+                throw new Error('메일 전송 기능이 설정되지 않았습니다. maryd.co.kr@gmail.com 으로 직접 문의해주세요.');
+
+            } catch (error) {
+                console.error('sendRequestEmail error:', error);
+                alert(`오류가 발생했습니다: ${error.message}`);
+                sendButton.disabled = false;
+                sendButton.textContent = '요청하기';
+            }
+        }
+
+        document.getElementById('send-request').addEventListener('click', sendRequestEmail);
+
+        async function generateDesign() {
+            const q1 = document.getElementById('q1').value;
+            const q2 = document.getElementById('q2').value;
+            const q3 = document.getElementById('q3').value;
+            const q4 = document.getElementById('q4').value;
+            const q5 = document.getElementById('q5').value;
+
+            if (!q1 || !q2 || !q3 || !q4 || !q5) {
+                alert('모든 질문에 답변해주세요.');
+                return;
+            }
+
+            const loading = document.getElementById('loading');
+            const resultContainer = document.getElementById('result-container');
+            const resultTitle = document.getElementById('result-title');
+            const resultText = document.getElementById('result-text');
+            const resultImage = document.getElementById('result-image');
+
+            // 채팅 입력 잠시 비활성화
+            chatSend.disabled = true;
+            chatInput.disabled = true;
+            loading.style.display = 'block';
+            resultContainer.style.display = 'none';
+
+            smoothScrollToLoading();
+
+            try {
+                const isStatic = location.hostname.endsWith('github.io') || location.protocol === 'file:';
+                let data;
+                if (isStatic) {
+                    // Direct client-side generation for GitHub Pages / static hosting
+                    const prompt = `A beautiful ${q1} made of ${q2} featuring ${q3}, ${q4} style, inspired by ${q5}, professional jewelry photography`;
+                    const seed = Math.floor(Math.random() * 1_000_000);
+                    const width = 1024;
+                    const height = 1024;
+                    const imageUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?width=${width}&height=${height}&nologo=true&seed=${seed}`;
+                    data = {
+                        imageUrl,
+                        description: generateKoreanDescription({ q1, q2, q3, q4, q5 })
+                    };
+                } else {
+                    // Use server when available (local dev / own hosting)
+                    try {
+                        const response = await fetch('/generate-image', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ q1, q2, q3, q4, q5 })
+                        });
+                        if (!response.ok) throw new Error('Server generation failed');
+                        data = await response.json();
+                    } catch (e) {
+                        // Any server failure (405 on GitHub Pages via custom domain, CORS, etc.) -> client fallback
+                        const prompt = `A beautiful ${q1} made of ${q2} featuring ${q3}, ${q4} style, inspired by ${q5}, professional jewelry photography`;
+                        const seed = Math.floor(Math.random() * 1_000_000);
+                        const width = 1024;
+                        const height = 1024;
+                        const imageUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?width=${width}&height=${height}&nologo=true&seed=${seed}`;
+                        data = {
+                            imageUrl,
+                            description: generateKoreanDescription({ q1, q2, q3, q4, q5 })
+                        };
+                    }
+                }
+
+                resultContainer.style.display = 'block';
+                resultTitle.style.display = 'block'; // 제목은 항상 보이도록
+                resultText.style.display = 'none'; // 설명은 숨김
+                resultImage.classList.add('loading-placeholder'); // 로딩 효과 추가
+                smoothScrollToResult();
+
+                resultImage.src = data.imageUrl;
+                resultImage.onload = () => {
+                    resultImage.classList.remove('loading-placeholder');
+                    document.getElementById('contact-form').style.display = 'block'; // 연락처 폼 다시 보이게
+                };
+                // 가능하다면 ChatGPT로 설명 보정 시도
+                refineDescriptionWithChatGPT({ 
+                    imageUrl: data.imageUrl, q1, q2, q3, q4, q5 
+                });
+
+            } catch (error) {
+                console.error('Error:', error);
+                let errorMessage = '디자인 생성에 실패했습니다. 다시 시도해주세요.';
+                
+                // Try to get more specific error message from response
+                if (error.response) {
+                    try {
+                        const errorData = await error.response.json();
+                        errorMessage = errorData.error || errorMessage;
+                        if (errorData.details) {
+                            errorMessage += '\n\n상세 정보: ' + errorData.details;
+                        }
+                    } catch (e) {
+                        // If we can't parse the error response, use the default message
+                    }
+                }
+                
+                // 더 나은 에러 표시를 위해 모달 스타일로 변경
+                const errorDiv = document.createElement('div');
+                errorDiv.style.cssText = `
+                    position: fixed;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    background: #4B2323;
+                    border: 2px solid #fff;
+                    border-radius: 12px;
+                    padding: 24px;
+                    max-width: 400px;
+                    width: 90%;
+                    z-index: 1000;
+                    text-align: center;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+                `;
+                
+                errorDiv.innerHTML = `
+                    <h3 style="margin: 0 0 16px 0; color: #fff;">⚠️ 오류 발생</h3>
+                    <p style="margin: 0 0 16px 0; color: #fff; line-height: 1.5;">${errorMessage}</p>
+                    <button onclick="this.parentElement.remove()" style="
+                        background: #fff;
+                        color: #4B2323;
+                        border: none;
+                        border-radius: 8px;
+                        padding: 8px 16px;
+                        cursor: pointer;
+                        font-weight: 600;
+                    ">확인</button>
+                `;
+                
+                document.body.appendChild(errorDiv);
+            } finally {
+                chatSend.disabled = false;
+                chatInput.disabled = false;
+                loading.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>

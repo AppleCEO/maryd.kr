@@ -18,6 +18,41 @@
             .top-image {
                 margin-top: 23px;
             }
+            .top-request-button {
+                position: absolute;
+                right: 57px;
+                top: 22px;
+                width: 221px;
+                height: 65px;
+                display: block;
+                background-color: #FEFCEC;
+                border-radius: 51.5px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                border: none;
+                cursor: pointer;
+                text-decoration: none;
+            }
+
+            
+            .top-request-text {
+                display: block;
+                width: auto;
+                height: auto;
+                text-align: left;
+                max-width: 800px; 
+
+                font-family: 'Pretendard', sans-serif;
+                font-weight: 500;
+                font-style: normal;
+                font-size: 28px;
+                line-height: 1.5;
+                
+                letter-spacing: 0;
+                text-transform: uppercase;
+                color: #662423;
+            }
             .maryd-logo {
                 text-align: center;
                 margin-top: 82px;
@@ -28,12 +63,13 @@
             }
             .video-thumbnail {
                 text-align: center;
-                margin-top: 100px;
+                margin-top: 90px;
                 position: relative; 
+                z-index: 100;
             }
             .video-thumbnail-image {
-                width: 525px;
-                height: 345px;
+                width: 640px;
+                height: 360px;
                 transition: transform 0.1s ease-in-out;
             }
             .dgodic-image {
@@ -137,18 +173,40 @@
                 color: #662423;
             }
 
-            .check-services-button {
+            .request-button {
                 position: absolute;
                 top: 991px;
                 left: 970px;
                 z-index: 10;
                 display: block;
+                width: 221px;
+                height: 65px;
+                background-color: #662423;
+                border-radius: 51.5px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                border: none;
+                cursor: pointer;
+                text-decoration: none;
             }
 
-            .check-services-button img {
+            .request-text {
                 display: block;
                 width: auto;
                 height: auto;
+                text-align: left;
+                max-width: 800px; 
+
+                font-family: 'Pretendard', sans-serif;
+                font-weight: 500;
+                font-style: normal;
+                font-size: 28px;
+                line-height: 1.5;
+                
+                letter-spacing: 0;
+                text-transform: uppercase;
+                color: #FEFCEC;
             }
 
             .bottom-band {
@@ -232,6 +290,9 @@
     <body>
         <div class="top-band">
             <img src="images/headerLogo.png" alt="top-image" class="top-image">
+            <a href="request.html" class="top-request-button">
+                <div class="top-request-text">견적 요청하기</div>
+            </a>
         </div>
         <div class="maryd-logo">
             <img src="images/MARY'D.png" alt="MARY'D" class="maryd-logo-image">
@@ -270,8 +331,10 @@
                 메리드의 모든 주얼리는 단순한 액세서리가 아니라,<br>
                 여러분만의 이야기를 담은 특별한 작품입니다.
             </div>
-            <a href="#" class="check-services-button">
-                <img src="images/CHECK ALL SERVICES.png" alt="Check All Services">
+            <a href="request.html" class="request-button">
+                <div class="request-text">
+                    견적 요청하기
+                </div>
             </a>
         </div>
         
@@ -293,17 +356,18 @@
             let hasMetAndWaiting = false;
             let hasDisappeared = false;
 
-            const endScroll = meetingMoveAmount / 1.5;
+            const endScroll = meetingMoveAmount / 2.5;
+            
             const videoContainerTop = videoContainer.offsetTop;
-            const startScroll = videoContainerTop - window.innerHeight / 2; // Start a bit later
+            const startScroll = videoContainerTop - window.innerHeight / 2;
 
-            const finalScaleX = window.innerWidth / 525;
-            const finalScaleY = window.innerHeight / 345;
+            const finalScaleX = window.innerWidth / 640;
+            const finalScaleY = window.innerHeight / 360;
 
 
             window.addEventListener('scroll', () => {
                 const scrollY = window.scrollY;
-                const moveAmount = scrollY * 1.5;
+                const moveAmount = scrollY * 2.5;
                 
                 if (moveAmount >= meetingMoveAmount) {
                     dcursiveImage.style.transform = `translateX(${meetingMoveAmount}px)`;
