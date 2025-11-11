@@ -554,7 +554,7 @@
                 .bottom-section-text {
                     position: static;
                     width: 80%;
-                    margin: 0 auto 30px;
+                    margin: 0 auto 16px;
                     text-align: center;
                     
 
@@ -569,15 +569,33 @@
                     color: #FEFCEC;
                 }
 
+                .bottom-buttons-container {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                }
+
                 .instagram-button, .youtube-button {
                     position: static;
                     display: flex;
                     justify-content: center;
                     align-items: center;
-                    margin: 0 auto 15px;
+                    margin: 0 10px 21px;
                     transform: none;
-                    width: 180px;
-                    height: 40px;
+                    width: 80px;
+                    height: 30px;
+                }
+
+                .instagram-button img {
+                    max-width: 80%;
+                    max-height: 100%;
+                    display: block;
+                }
+                
+                .youtube-button img {
+                    max-width: 70%;
+                    max-height: 100%;
+                    display: block;
                 }
             }
         </style>
@@ -778,12 +796,14 @@
                 AI 기반 검색엔진과 매리드만의 독자적인 디자인 도구를 통해,<br>
                 세상에 단 하나뿐인 맞춤 주얼리 제작의 기쁨을 경험해보세요.
             </div>
-            <a href="https://www.instagram.com/maryd.work/" target="_blank" class="instagram-button">
-                <img src="images/instagram.png" alt="Instagram">
-            </a>
-            <a href="https://www.youtube.com/@byMARYD" target="_blank" class="youtube-button">
-                <img src="images/youtube.png" alt="YouTube">
-            </a>
+            <div class="bottom-buttons-container">
+                <a href="https://www.instagram.com/maryd.work/" target="_blank" class="instagram-button">
+                    <img src="images/instagram.png" alt="Instagram">
+                </a>
+                <a href="https://www.youtube.com/@byMARYD" target="_blank" class="youtube-button">
+                    <img src="images/youtube.png" alt="YouTube">
+                </a>
+            </div>
         </div>
     </body>
 </html>
