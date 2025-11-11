@@ -58,12 +58,6 @@
                 height: 360px;
                 transition: transform 0.1s ease-in-out;
             }
-            .dgodic-image {
-                position: absolute;
-                top: 50%;            
-                right: 80px;
-                transition: transform 0.1s ease-in-out, opacity 0.1s ease-in-out;
-            }
             .dgodic-text {
                 position: absolute;
                 top: calc(50% + 55px);
@@ -352,11 +346,11 @@
                 .video-thumbnail {
                     margin-top: 60px;
                     width: 100%;
-                    height: 400px;
+                    height: 300px;
                 }
 
                 .video-thumbnail-image {
-                    margin-top: 240px;
+                    margin-top: 120px;
                     width: 100%;
                     height: auto;
                     transition: transform 0.1s ease-in-out;
@@ -465,6 +459,10 @@
                     display: block;
                     margin: 0 auto 40px;
                     width: 80%;
+                }
+
+                .last-section-first-text {
+                    display: none;
                 }
 
                 .last-section-text {
@@ -619,61 +617,90 @@
 
             window.addEventListener('scroll', () => {
                 const scrollY = window.scrollY;
-                const moveAmount = scrollY * 2.5;
-                
-                if (moveAmount >= meetingMoveAmount) {
-                    dcursiveImage.style.transform = `translateX(${meetingMoveAmount}px)`;
-                    dgodicImage.style.transform = `translateY(-50%) translateX(-${meetingMoveAmount}px)`;
-                    
-                    if (!hasMetAndWaiting && !hasDisappeared) {
-                        hasMetAndWaiting = true;
-                        if (disappearanceTimeout) {
-                            clearTimeout(disappearanceTimeout);
-                        }
-                        disappearanceTimeout = setTimeout(() => {
-                            dgodicImage.style.opacity = '0';
-                            dgodicText.style.opacity = '0';
-                            dcursiveImage.style.opacity = '0';
-                            dcursiveText.style.opacity = '0';
-                            hasDisappeared = true;
-                            hasMetAndWaiting = false;
-                        }, 1000);
+
+                // 'D' images animation
+                if (window.innerWidth <= 768) { // Mobile
+                    const moveMultiplier = 2.5;
+                    const moveAmount = scrollY * moveMultiplier;
+                    const mobileMeetingMoveAmount = meetingMoveAmount + 74
+                    if (moveAmount >= mobileMeetingMoveAmount) {
+                        // Merged and fixed state at the top of the video
+                        dcursiveImage.style.transform = `translateX(${mobileMeetingMoveAmount}px) translateY(120px)`;
+                        dgodicImage.style.transform = `translateX(-${mobileMeetingMoveAmount}px) translateY(120px)`;
+                    } else {
+                        // Approaching state
+                        dcursiveImage.style.transform = `translateX(${moveAmount}px)`;
+                        dgodicImage.style.transform = `translateX(-${moveAmount}px)`;
                     }
                     
-                    if (!hasDisappeared) {
+                    if (disappearanceTimeout) clearTimeout(disappearanceTimeout);
+                    hasMetAndWaiting = false;
+                    hasDisappeared = false;
+
+                } else { // Desktop
+                    const moveMultiplier = 2.5;
+                    const moveAmount = scrollY * moveMultiplier;
+                    const dgodicBaseTransform = 'translateY(-50%) ';
+
+                    if (moveAmount >= meetingMoveAmount) {
+                        dcursiveImage.style.transform = `translateX(${meetingMoveAmount}px)`;
+                        dgodicImage.style.transform = dgodicBaseTransform + `translateX(-${meetingMoveAmount}px)`;
+                        
+                        if (!hasMetAndWaiting && !hasDisappeared) {
+                            hasMetAndWaiting = true;
+                            if (disappearanceTimeout) {
+                                clearTimeout(disappearanceTimeout);
+                            }
+                            disappearanceTimeout = setTimeout(() => {
+                                dgodicImage.style.opacity = '0';
+                                dgodicText.style.opacity = '0';
+                                dcursiveImage.style.opacity = '0';
+                                dcursiveText.style.opacity = '0';
+                                hasDisappeared = true;
+                                hasMetAndWaiting = false;
+                            }, 1000);
+                        }
+                        
+                        if (!hasDisappeared) {
+                            dgodicImage.style.opacity = '1';
+                            dgodicText.style.opacity = '1';
+                            dcursiveImage.style.opacity = '1';
+                            dcursiveText.style.opacity = '1';
+                        }
+                    } else {
+                        dcursiveImage.style.transform = `translateX(${moveAmount}px)`;
+                        dgodicImage.style.transform = dgodicBaseTransform + `translateX(-${moveAmount}px)`;
                         dgodicImage.style.opacity = '1';
                         dgodicText.style.opacity = '1';
                         dcursiveImage.style.opacity = '1';
                         dcursiveText.style.opacity = '1';
-                    }
 
-                } else {
-                    dcursiveImage.style.transform = `translateX(${moveAmount}px)`;
-                    dgodicImage.style.transform = `translateY(-50%) translateX(-${moveAmount}px)`;
-                    dgodicImage.style.opacity = '1';
-                    dgodicText.style.opacity = '1';
-                    dcursiveImage.style.opacity = '1';
-                    dcursiveText.style.opacity = '1';
-
-                    if (disappearanceTimeout) {
-                        clearTimeout(disappearanceTimeout);
-                        disappearanceTimeout = null;
+                        if (disappearanceTimeout) {
+                            clearTimeout(disappearanceTimeout);
+                            disappearanceTimeout = null;
+                        }
+                        hasMetAndWaiting = false;
+                        hasDisappeared = false;
                     }
-                    hasMetAndWaiting = false;
-                    hasDisappeared = false;
                 }
 
-                if (scrollY >= startScroll && scrollY <= endScroll) {
-                    const scrollFraction = (scrollY - startScroll) / (endScroll - startScroll);
-                    const scaleX = 1 + (finalScaleX - 1) * scrollFraction;
-                    const scaleY = 1 + (finalScaleY - 1) * scrollFraction;
-                    video.style.transform = `scaleX(${scaleX}) scaleY(${scaleY})`;
-                } else if (scrollY < startScroll) {
-                    video.style.transform = 'scale(1)';
+                // Video scaling logic
+                if (window.innerWidth > 768) {
+                    if (scrollY >= startScroll && scrollY <= endScroll) {
+                        const scrollFraction = (scrollY - startScroll) / (endScroll - startScroll);
+                        const scaleX = 1 + (finalScaleX - 1) * scrollFraction;
+                        const scaleY = 1 + (finalScaleY - 1) * scrollFraction;
+                        video.style.transform = `scaleX(${scaleX}) scaleY(${scaleY})`;
+                    } else if (scrollY < startScroll) {
+                        video.style.transform = 'scale(1)';
+                    } else {
+                        video.style.transform = `scaleX(${finalScaleX}) scaleY(${finalScaleY})`;
+                    }
                 } else {
-                    video.style.transform = `scaleX(${finalScaleX}) scaleY(${finalScaleY})`;
+                    video.style.transform = 'scale(1)';
                 }
                 
+                // Parallax logic
                 parallaxImages.forEach((piece, index) => {
                     const speed = parallaxSpeedFactors[index] || 0;
                     const moveY = scrollY * speed;
