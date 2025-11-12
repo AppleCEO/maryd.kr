@@ -63,11 +63,6 @@
                 height: 360px;
                 transition: transform 0.1s ease-in-out;
             }
-            .dgodic-text {
-                position: absolute;
-                top: calc(50% + 55px);
-                right: 80px;
-            }
             .where-imagination-becomes-reality {
                 text-align: center;
                 margin-top: 100px;              
@@ -75,32 +70,29 @@
             .dcursive-image {
                 position: absolute;
                 left: 80px;
-                top: calc(50% - (42px + 48.5px)); /* 42픽셀 상단 + dgodic 이미지의 높이의 반  */
+                top: calc(50% - (42px));
                 transition: transform 0.1s ease-in-out, opacity 0.1s ease-in-out;
             }
             .dcursive-text {
                 position: absolute;
                 left: 80px;
-                top: calc(50% + 55px);
+                top: calc(50% + 97 + 17px); /* DGodic 이미지 높이 + 간격 17 */
             }
             .dgodic-image {
                 position: absolute;
-                top: 50%;            
-                transform: translateY(-50%);
+                top: 50%;
                 right: 80px;
                 transition: transform 0.1s ease-in-out, opacity 0.1s ease-in-out;
+            }
+            .dgodic-text {
+                position: absolute;
+                top: calc(50% + 97 + 17px); /* DGodic 이미지 높이 + 간격 17 */
+                right: 80px;
             }
             .where-imagination-becomes-reality {
                 text-align: center;
                 margin-top: 100px;                
             }
-            .dcursive-image {
-                position: absolute;
-                left: 80px;
-                top: calc(50% - (42px + 48.5px)); /* 42픽셀 상단 + dgodic 이미지의 높이의 반  */
-                transition: transform 0.1s ease-in-out, opacity 0.1s ease-in-out;
-            }
-            
             .new-section {
                 position: relative;
                 height: 1307px;
@@ -736,40 +728,20 @@
                 } else { // Desktop
                     const moveMultiplier = 2.5;
                     const moveAmount = scrollY * moveMultiplier;
-                    const dgodicBaseTransform = 'translateY(-50%) ';
 
                     if (moveAmount >= meetingMoveAmount) {
                         dcursiveImage.style.transform = `translateX(${meetingMoveAmount}px)`;
-                        dgodicImage.style.transform = dgodicBaseTransform + `translateX(-${meetingMoveAmount}px)`;
+                        dgodicImage.style.transform = `translateX(-${meetingMoveAmount}px)`;
                         
                         if (!hasMetAndWaiting && !hasDisappeared) {
                             hasMetAndWaiting = true;
                             if (disappearanceTimeout) {
                                 clearTimeout(disappearanceTimeout);
                             }
-                            disappearanceTimeout = setTimeout(() => {
-                                dgodicImage.style.opacity = '0';
-                                dgodicText.style.opacity = '0';
-                                dcursiveImage.style.opacity = '0';
-                                dcursiveText.style.opacity = '0';
-                                hasDisappeared = true;
-                                hasMetAndWaiting = false;
-                            }, 1000);
-                        }
-                        
-                        if (!hasDisappeared) {
-                            dgodicImage.style.opacity = '1';
-                            dgodicText.style.opacity = '1';
-                            dcursiveImage.style.opacity = '1';
-                            dcursiveText.style.opacity = '1';
                         }
                     } else {
                         dcursiveImage.style.transform = `translateX(${moveAmount}px)`;
-                        dgodicImage.style.transform = dgodicBaseTransform + `translateX(-${moveAmount}px)`;
-                        dgodicImage.style.opacity = '1';
-                        dgodicText.style.opacity = '1';
-                        dcursiveImage.style.opacity = '1';
-                        dcursiveText.style.opacity = '1';
+                        dgodicImage.style.transform = `translateX(-${moveAmount}px)`;
 
                         if (disappearanceTimeout) {
                             clearTimeout(disappearanceTimeout);
