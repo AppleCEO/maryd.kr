@@ -76,7 +76,7 @@
             .dcursive-text {
                 position: absolute;
                 left: 80px;
-                top: calc(50% + 97 + 17px); /* DGodic 이미지 높이 + 간격 17 */
+                top: calc(50% + (97px + 17px)); /* DGodic 이미지 높이 97 + 간격 17 */
             }
             .dgodic-image {
                 position: absolute;
@@ -86,7 +86,7 @@
             }
             .dgodic-text {
                 position: absolute;
-                top: calc(50% + 97 + 17px); /* DGodic 이미지 높이 + 간격 17 */
+                top: calc(50% + (97px + 17px)); /* DGodic 이미지 높이 97 + 간격 17 */
                 right: 80px;
             }
             .where-imagination-becomes-reality {
@@ -679,14 +679,10 @@
 
             const dgodicInitialRect = dgodicImage.getBoundingClientRect();
             const dcursiveInitialRect = dcursiveImage.getBoundingClientRect();
-            const initialGap = dgodicInitialRect.left - dcursiveInitialRect.right;
-            const meetingMoveAmount = initialGap / 2 - 50;
 
             let disappearanceTimeout = null;
             let hasMetAndWaiting = false;
             let hasDisappeared = false;
-
-            const endScroll = meetingMoveAmount / 2.5;
             
             const videoContainerTop = videoContainer.offsetTop;
             const startScroll = videoContainerTop - window.innerHeight / 2;
@@ -703,12 +699,14 @@
 
             window.addEventListener('scroll', () => {
                 const scrollY = window.scrollY;
-
-                // 'D' images animation
+                const initialGap = dgodicInitialRect.left - dcursiveInitialRect.right;
+                const meetingMoveAmount = initialGap / 2;
+                const endScroll = meetingMoveAmount / 2.5;
+                
                 if (window.innerWidth <= 768) { // Mobile
                     const moveMultiplier = 2.5;
                     const moveAmount = scrollY * moveMultiplier;
-                    const mobileMeetingMoveAmount = meetingMoveAmount + 74
+                    const mobileMeetingMoveAmount = meetingMoveAmount + 24;
                     
                     if (moveAmount >= mobileMeetingMoveAmount || isMerged) {
                         // Merged and fixed state at the top of the video
@@ -729,7 +727,7 @@
                     const moveMultiplier = 2.5;
                     const moveAmount = scrollY * moveMultiplier;
 
-                    if (moveAmount >= meetingMoveAmount) {
+                    if (moveAmount >= meetingMoveAmount || isMerged) {
                         dcursiveImage.style.transform = `translateX(${meetingMoveAmount}px)`;
                         dgodicImage.style.transform = `translateX(-${meetingMoveAmount}px)`;
                         
