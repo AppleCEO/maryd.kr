@@ -677,92 +677,92 @@
             const parallaxImages = document.querySelectorAll('.parallax-image');
             const parallaxSpeedFactors = [0.3, 0.6, 0.15, -0.3, -0.2, -0.15];
 
-            const dgodicInitialRect = dgodicImage.getBoundingClientRect();
-            const dcursiveInitialRect = dcursiveImage.getBoundingClientRect();
+            let desktopMeetingMoveAmount, mobileMeetingMoveAmount, endScroll, startScroll, videoContainerTop, finalScaleX, finalScaleY;
 
-            let disappearanceTimeout = null;
-            let hasMetAndWaiting = false;
-            let hasDisappeared = false;
-            
-            const videoContainerTop = videoContainer.offsetTop;
-            const startScroll = videoContainerTop - window.innerHeight / 2;
+            function calculateDimensions() {
+                const dgodicInitialRect = dgodicImage.getBoundingClientRect();
+                const dcursiveInitialRect = dcursiveImage.getBoundingClientRect();
+                const initialGap = dgodicInitialRect.left - dcursiveInitialRect.right;
+                
+                desktopMeetingMoveAmount = initialGap / 2 + 60;
+                mobileMeetingMoveAmount = initialGap / 2 + 24;
+                endScroll = desktopMeetingMoveAmount / 2.5;
 
-            let finalScaleX = window.innerWidth / 640;
-            let finalScaleY = window.innerHeight / 360;
-            let isMerged = false;
-            
-            if (window.innerWidth <= 768) {
-                finalScaleX = 1;
-                finalScaleY = 1;
+                videoContainerTop = videoContainer.offsetTop;
+                startScroll = videoContainerTop - window.innerHeight / 2;
+
+                finalScaleX = window.innerWidth / 640;
+                finalScaleY = window.innerHeight / 360;
+                
+                if (window.innerWidth <= 768) {
+                    finalScaleX = 1;
+                    finalScaleY = 1;
+                }
             }
 
-
+            window.addEventListener('load', calculateDimensions);
+            window.addEventListener('resize', calculateDimensions);
+            
             window.addEventListener('scroll', () => {
                 const scrollY = window.scrollY;
-                const initialGap = dgodicInitialRect.left - dcursiveInitialRect.right;
-                const meetingMoveAmount = initialGap / 2;
-                const endScroll = meetingMoveAmount / 2.5;
                 
                 if (window.innerWidth <= 768) { // Mobile
                     const moveMultiplier = 2.5;
                     const moveAmount = scrollY * moveMultiplier;
-                    const mobileMeetingMoveAmount = meetingMoveAmount + 24;
                     
-                    if (moveAmount >= mobileMeetingMoveAmount || isMerged) {
-                        // Merged and fixed state at the top of the video
+                    if (moveAmount >= mobileMeetingMoveAmount) {
                         dcursiveImage.style.transform = `translateX(${mobileMeetingMoveAmount}px) translateY(120px)`;
                         dgodicImage.style.transform = `translateX(-${mobileMeetingMoveAmount}px) translateY(120px)`;
-                        isMerged = true;
                     } else {
-                        // Approaching state
-                        dcursiveImage.style.transform = `translateX(${moveAmount}px)  translateY(${moveAmount/mobileMeetingMoveAmount*120}px)`;
-                        dgodicImage.style.transform = `translateX(-${moveAmount}px)  translateY(${moveAmount/mobileMeetingMoveAmount*120}px)`;
+                        dcursiveImage.style.transform = `translateX(${moveAmount}px) translateY(${moveAmount/mobileMeetingMoveAmount*120}px)`;
+                        dgodicImage.style.transform = `translateX(-${moveAmount}px) translateY(${moveAmount/mobileMeetingMoveAmount*120}px)`;
                     }
-                    
-                    if (disappearanceTimeout) clearTimeout(disappearanceTimeout);
-                    hasMetAndWaiting = false;
-                    hasDisappeared = false;
-
+                
                 } else { // Desktop
                     const moveMultiplier = 2.5;
                     const moveAmount = scrollY * moveMultiplier;
+                    const diagonalSlope = 0.53; 
 
-                    if (moveAmount >= meetingMoveAmount || isMerged) {
-                        dcursiveImage.style.transform = `translateX(${meetingMoveAmount}px)`;
-                        dgodicImage.style.transform = `translateX(-${meetingMoveAmount}px)`;
+                    if (scrollY <= endScroll) {
+                        dcursiveImage.style.position = 'absolute';
+                        dcursiveImage.style.top = 'calc(50% - (42px))';
+                        dcursiveImage.style.left = '80px';
+                        dcursiveImage.style.zIndex = 'auto';
+
+                        dgodicImage.style.position = 'absolute';
+                        dgodicImage.style.top = '50%';
+                        dgodicImage.style.right = '80px';
+                        dgodicImage.style.left = '';
+                        dgodicImage.style.zIndex = 'auto';
+
+                        const currentY = -moveAmount * diagonalSlope;
                         
-                        if (!hasMetAndWaiting && !hasDisappeared) {
-                            hasMetAndWaiting = true;
-                            if (disappearanceTimeout) {
-                                clearTimeout(disappearanceTimeout);
-                            }
+                        if (moveAmount >= desktopMeetingMoveAmount) {
+                            const finalY = -desktopMeetingMoveAmount * diagonalSlope;
+                            dcursiveImage.style.transform = `translateX(${desktopMeetingMoveAmount}px) translateY(${finalY}px)`;
+                            dgodicImage.style.transform = `translateX(-${desktopMeetingMoveAmount}px) translateY(${finalY}px)`;
+                        } else {
+                            dcursiveImage.style.transform = `translateX(${moveAmount}px) translateY(${currentY}px)`;
+                            dgodicImage.style.transform = `translateX(-${moveAmount}px) translateY(${currentY}px)`;
                         }
-                    } else {
-                        dcursiveImage.style.transform = `translateX(${moveAmount}px)`;
-                        dgodicImage.style.transform = `translateX(-${moveAmount}px)`;
+                    }
 
-                        if (disappearanceTimeout) {
-                            clearTimeout(disappearanceTimeout);
-                            disappearanceTimeout = null;
+                    if (startScroll && endScroll) {
+                        if (scrollY >= startScroll && scrollY <= endScroll) {
+                            const scrollFraction = (scrollY - startScroll) / (endScroll - startScroll);
+                            const scaleX = 1 + (finalScaleX - 1) * scrollFraction;
+                            const scaleY = 1 + (finalScaleY - 1) * scrollFraction;
+                            video.style.transform = `scaleX(${scaleX}) scaleY(${scaleY})`;
+                        } else if (scrollY < startScroll) {
+                            video.style.transform = 'scale(1)';
+                        } else {
+                            video.style.transform = `scaleX(${finalScaleX}) scaleY(${finalScaleY})`;
                         }
-                        hasMetAndWaiting = false;
-                        hasDisappeared = false;
                     }
                 }
 
                 // Video scaling logic
-                if (window.innerWidth > 768) {
-                    if (scrollY >= startScroll && scrollY <= endScroll) {
-                        const scrollFraction = (scrollY - startScroll) / (endScroll - startScroll);
-                        const scaleX = 1 + (finalScaleX - 1) * scrollFraction;
-                        const scaleY = 1 + (finalScaleY - 1) * scrollFraction;
-                        video.style.transform = `scaleX(${scaleX}) scaleY(${scaleY})`;
-                    } else if (scrollY < startScroll) {
-                        video.style.transform = 'scale(1)';
-                    } else {
-                        video.style.transform = `scaleX(${finalScaleX}) scaleY(${finalScaleY})`;
-                    }
-                } else {
+                if (window.innerWidth <= 768) {
                     video.style.transform = 'scale(1)';
                 }
                 
