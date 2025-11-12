@@ -690,7 +690,8 @@
 
             let finalScaleX = window.innerWidth / 640;
             let finalScaleY = window.innerHeight / 360;
-
+            let isMerged = false;
+            
             if (window.innerWidth <= 768) {
                 finalScaleX = 1;
                 finalScaleY = 1;
@@ -705,7 +706,7 @@
                     const moveMultiplier = 2.5;
                     const moveAmount = scrollY * moveMultiplier;
                     const mobileMeetingMoveAmount = meetingMoveAmount + 74
-                    let isMerged = false;
+                    
                     if (moveAmount >= mobileMeetingMoveAmount || isMerged) {
                         // Merged and fixed state at the top of the video
                         dcursiveImage.style.transform = `translateX(${mobileMeetingMoveAmount}px) translateY(120px)`;
