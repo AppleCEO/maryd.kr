@@ -9,7 +9,7 @@
         body {
             margin: 0;
             padding: 0;
-            background: #4B2323;
+            background: #662423;
             color: #fff;
             font-family: 'Noto Sans KR', 'Noto Serif', -apple-system, Roboto, Helvetica, sans-serif;
             min-height: 100vh;
@@ -17,6 +17,19 @@
             flex-direction: column;
             overflow-x: hidden;
             letter-spacing: 0.05em;
+        }
+        .top-band {
+            width: 100%;
+            height: 108px;
+            background-color: #FEFCEC;
+            text-align: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 100;
+        }
+        .top-image {
+            margin-top: 23px;
         }
         .container {
             width: 100vw;
@@ -192,6 +205,19 @@
             background: #333;
             animation: pulse 1.5s infinite ease-in-out;
         }
+        .top-band {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 80px;
+            padding: 0 20px;
+            box-sizing: border-box;
+        }
+        .top-image {
+            margin-top: 0;
+            height: 30px;
+            order: 1;
+        }
         @keyframes pulse {
             0% { background-color: #333; }
             50% { background-color: #444; }
@@ -200,6 +226,9 @@
     </style>
 </head>
 <body>
+    <div class="top-band">
+        <img src="images/headerLogoSecond.png" class="top-image">
+    </div>
     <div class="container">
         <div class="logo-box">
             <a href="index.html"><img src="images/headerLogo.png" alt="MARYD 로고" class="logo-img" /></a>
