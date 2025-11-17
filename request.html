@@ -255,7 +255,16 @@
                     <textarea id="notes" placeholder="사이즈, 예산, 납기 등 추가 요청사항을 적어주세요" style="width:100%; max-width: 512px; min-height:120px; padding:12px; border-radius:8px; border:1px solid #fff; background: rgba(255,255,255,0.1); color:#fff; box-sizing: border-box;"></textarea>
                                          <button id="send-request" class="submit-btn" style="margin-top:14px;">요청하기</button>
                  </div>
-
+                 <div id="result-container" style="margin-top: 30px; display: none; text-align: center;">
+                    <h3 id="result-title" style="margin-bottom: 16px;">AI가 생성한 디자인</h3>
+                    <img id="result-image" src="" alt="AI가 생성한 주얼리 디자인 이미지" ...>
+                    
+                    <input type="hidden" id="image-base64-data" />
+                    
+                    <p id="result-text" ...></p>
+                    <div id="contact-form" ...>
+                        </div>
+                </div>
             </div>
         </div>
 
@@ -286,7 +295,27 @@
         // Google Apps Script Web App URL (설정 시 시트로 저장됩니다). 비워두면 mailto 폴백 사용
         const SUBMIT_ENDPOINT = "https://script.google.com/macros/s/AKfycbzW0Mtto5z2z_Fp6iKT75mlytKn-z4j0V7qlQPMUo95upsl7onkhgbB3oI62NWcWDhhbg/exec";
 
-        function generateKoreanDescription({ q1, q2, q3, q4, q5 }) {
+        async function fetchImageAsBase64(url) {
+            try {
+                const proxyUrl = `https://node-ai-cqn3.vercel.app/api/proxy-image?url=${encodeURIComponent(url)}`;
+                
+                const response = await fetch(proxyUrl);
+                if (!response.ok) {
+                    throw new Error(`Failed to fetch image via proxy: ${response.statusText}`);
+                }
+                
+                const blob = await response.blob();
+                
+                return new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onloadend = () => resolve(reader.result);
+                    reader.onerror = reject;
+                    reader.readAsDataURL(blob);
+                });
+            } catch (error) {
+                console.error("Error fetching image as Base64:", error);
+                return null;
+            }
         }
 
         async function refineDescriptionWithChatGPT({ imageUrl, q1, q2, q3, q4, q5 }) {
@@ -527,77 +556,58 @@
             smoothScrollToLoading();
 
             try {
-                const isStatic = location.hostname.endsWith('github.io') || location.protocol === 'file:';
-                let data;
-                if (isStatic) {
-                    // Direct client-side generation for GitHub Pages / static hosting
-                    const prompt = `A beautiful ${q1} made of ${q2} featuring ${q3}, ${q4} style, inspired by ${q5}, professional jewelry photography`;
-                    const seed = Math.floor(Math.random() * 1_000_000);
-                    const width = 1024;
-                    const height = 1024;
-                    const imageUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?width=${width}&height=${height}&nologo=true&seed=${seed}`;
-                    data = {
-                        imageUrl,
-                        description: generateKoreanDescription({ q1, q2, q3, q4, q5 })
-                    };
-                } else {
-                    // Use server when available (local dev / own hosting)
+                const endpointUrl = 'https://node-ai-cqn3.vercel.app/api/generate-image';
+
+                const response = await fetch(endpointUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ q1, q2, q3, q4, q5 })
+                });
+
+                if (!response.ok) {
+                    let errorData;
                     try {
-                        const response = await fetch('/generate-image', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ q1, q2, q3, q4, q5 })
-                        });
-                        if (!response.ok) throw new Error('Server generation failed');
-                        data = await response.json();
+                        errorData = await response.json();
                     } catch (e) {
-                        // Any server failure (405 on GitHub Pages via custom domain, CORS, etc.) -> client fallback
-                        const prompt = `A beautiful ${q1} made of ${q2} featuring ${q3}, ${q4} style, inspired by ${q5}, professional jewelry photography`;
-                        const seed = Math.floor(Math.random() * 1_000_000);
-                        const width = 1024;
-                        const height = 1024;
-                        const imageUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?width=${width}&height=${height}&nologo=true&seed=${seed}`;
-                        data = {
-                            imageUrl,
-                            description: generateKoreanDescription({ q1, q2, q3, q4, q5 })
-                        };
+                        throw new Error(response.statusText || '서버에서 응답을 받지 못했습니다.');
                     }
+                    throw new Error(errorData.details || errorData.error || '이미지 생성에 실패했습니다.');
                 }
 
+                const data = await response.json();
+    
                 resultContainer.style.display = 'block';
-                resultTitle.style.display = 'block'; // 제목은 항상 보이도록
-                resultText.style.display = 'none'; // 설명은 숨김
-                resultImage.classList.add('loading-placeholder'); // 로딩 효과 추가
+                smoothScrollToResult();
+                const imageUrl = data.imageUrl;
+                resultImage.src = imageUrl;
+                const base64Data = await fetchImageAsBase64(imageUrl);
+                
+                if (base64Data) {
+                    document.getElementById('image-base64-data').value = base64Data;
+                } else {
+                    console.warn("Base64 변환 실패. 이메일에 이미지가 첨부되지 않을 수 있습니다.");
+                }
+                
+                resultContainer.style.display = 'block';
+                resultTitle.style.display = 'block';
+                resultText.style.display = 'none';
+                resultImage.classList.add('loading-placeholder');
                 smoothScrollToResult();
 
                 resultImage.src = data.imageUrl;
                 resultImage.onload = () => {
                     resultImage.classList.remove('loading-placeholder');
-                    document.getElementById('contact-form').style.display = 'block'; // 연락처 폼 다시 보이게
+                    document.getElementById('contact-form').style.display = 'block';
                 };
-                // 가능하다면 ChatGPT로 설명 보정 시도
+                
                 refineDescriptionWithChatGPT({ 
                     imageUrl: data.imageUrl, q1, q2, q3, q4, q5 
                 });
 
             } catch (error) {
                 console.error('Error:', error);
-                let errorMessage = '디자인 생성에 실패했습니다. 다시 시도해주세요.';
+                let errorMessage = error.message || '디자인 생성에 실패했습니다. 다시 시도해주세요.';
                 
-                // Try to get more specific error message from response
-                if (error.response) {
-                    try {
-                        const errorData = await error.response.json();
-                        errorMessage = errorData.error || errorMessage;
-                        if (errorData.details) {
-                            errorMessage += '\n\n상세 정보: ' + errorData.details;
-                        }
-                    } catch (e) {
-                        // If we can't parse the error response, use the default message
-                    }
-                }
-                
-                // 더 나은 에러 표시를 위해 모달 스타일로 변경
                 const errorDiv = document.createElement('div');
                 errorDiv.style.cssText = `
                     position: fixed;
