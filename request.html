@@ -548,18 +548,17 @@
                 const data = await response.json();
                 
                 resultContainer.style.display = 'block';
-                resultTitle.style.display = 'block'; // 제목은 항상 보이도록
-                resultText.style.display = 'none'; // 설명은 숨김
-                resultImage.classList.add('loading-placeholder'); // 로딩 효과 추가
+                resultTitle.style.display = 'block';
+                resultText.style.display = 'none';
+                resultImage.classList.add('loading-placeholder');
                 smoothScrollToResult();
 
-                // 서버에서 받은 이미지 URL을 설정
                 resultImage.src = data.imageUrl;
                 resultImage.onload = () => {
                     resultImage.classList.remove('loading-placeholder');
-                    document.getElementById('contact-form').style.display = 'block'; // 연락처 폼 다시 보이게
+                    document.getElementById('contact-form').style.display = 'block';
                 };
-                // 가능하다면 ChatGPT로 설명 보정 시도
+                
                 refineDescriptionWithChatGPT({ 
                     imageUrl: data.imageUrl, q1, q2, q3, q4, q5 
                 });
@@ -568,7 +567,6 @@
                 console.error('Error:', error);
                 let errorMessage = error.message || '디자인 생성에 실패했습니다. 다시 시도해주세요.';
                 
-                // 더 나은 에러 표시를 위해 모달 스타일로 변경
                 const errorDiv = document.createElement('div');
                 errorDiv.style.cssText = `
                     position: fixed;
