@@ -329,7 +329,7 @@
                 }
 
                 .top-image {
-                    margin-top: 0;
+                    width: auto;
                     height: 30px;
                     order: 1;
                 }
@@ -341,6 +341,7 @@
                     transform: translateY(-50%);
                     width: 90px;
                     height: 34px;
+                    border-radius: 34px;
                 }
 
                 .top-menu {
@@ -366,22 +367,23 @@
 
                 .maryd-logo {
                     width: 257px;
-                    height: 47px;
                     margin: 122px auto 42px;
                 }
 
                 .maryd-logo-image {
                     width: 80%;
+                    height: auto;
                 }
 
                 .where-jewelry-meets-meaning {
                     margin: 37px auto;
-                    width: 121px;
-                    height: 52px;
+                    width: 100px;
+                    height: auto;
                 }
 
                 .where-jewelry-meets-meaning-image {
                     width: 100%;
+                    height: auto;
                 }
 
                 .video-thumbnail {
@@ -443,9 +445,6 @@
                 .desktop-image {
                     display: none;
                 }
-                .mobile-image {
-                    display: block;
-                }
 
                 .new-section {
                     height: 576px;
@@ -495,34 +494,46 @@
                 .parallax-5 { width: 170px; height: 168px; top: 20%; left: 20%; }
                 .parallax-6 { width: 151px; height: 165px; top: 80%; right: 15%; display: none;}
 
-
+                .last-container {
+                    display: flex;
+                    width: 100%;
+                    background: #FEFCEC;
+                }
                 .last-section {
                     height: 425px;
                 }
 
                 .last-image {
-                    top: 21.49px;
-                    left: 16px;
-                    width: 40%;
+                    position: absolute;
+                    top: 3.8vw;
+                    left: 4.2vw;
+                    width: 37.6vw;
                     height: auto;
+                }
+
+                .right-section {
+                    width: 50%;
+                    height: 100%;
+                    padding: 5px;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    
+                    box-sizing: border-box;
                 }
 
                 .we-offer-an-experience-beyond-jewelry {
-                    width: 60%;
+                    margin-top: 54px;
+                    width: 120px;
                     height: auto;
-                    top: 86px;
-                    left: 30%;
                 }
 
                 .last-section-first-text {
-                    position: absolute;
-                    text-align: left;
-                    max-width: 800px;
-
-                    top: 250px;
-                    left: 15px;
-
-                    text-align: left;
+                    text-align: center;
+                    margin-top: 20px;
+                    width: 100px;
+                    
                     font-family: 'Pretendard', sans-serif;
                     font-weight: 300;
                     font-style: normal;
@@ -536,13 +547,11 @@
 
                 .last-section-text {
                     position: absolute;
-                    text-align: left;
-                    max-width: 800px;
-
-                    top: 300px;
-                    left: 15px;
-
-                    text-align: left;
+                    top: 1520px;
+                    left: 5px;
+                    width: 98%;
+                    
+                    text-align: center;
                     font-family: 'Pretendard', sans-serif;
                     font-weight: 300;
                     font-style: normal;
@@ -555,9 +564,7 @@
                 }
 
                 .request-button {
-                    position: absolute;
-                    top: 362px;
-                    left: 15px;
+                    margin-top: 30px;
                     display: block;
                     justify-content: center;
                     align-items: center;
@@ -621,17 +628,18 @@
                     transform: none;
                     width: 80px;
                     height: 30px;
+                    border-radius: 30px;
                 }
 
                 .instagram-button img {
-                    max-width: 80%;
-                    max-height: 100%;
+                    width: auto;
+                    height: 8px;
                     display: block;
                 }
                 
                 .youtube-button img {
-                    max-width: 70%;
-                    max-height: 100%;
+                    width: auto;
+                    height: 8px;
                     display: block;
                 }
             }
@@ -684,8 +692,7 @@
         </div>
         <div class="last-container">
             <div class="last-section">
-                <img src="images/lastImage.png" class="last-image desktop-image">
-                <img src="images/lastImageMobile.png" class="last-image mobile-image">
+                <img src="images/lastImage.png" class="last-image">
             </div>
             <div class="right-section">
                 <img src="images/Where Jewelry Meets Meaning 2.png" class="we-offer-an-experience-beyond-jewelry">
