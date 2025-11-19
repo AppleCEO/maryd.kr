@@ -157,10 +157,16 @@
             .parallax-5 { width: 341px; height: 336px; top: 50%; left: 20%; background-image: url('images/5.png'); background-size: cover; }
             .parallax-6 { width: 176px; height: 188px; top: 30%; right: 0%; background-image: url('images/6.png'); background-size: cover; }
 
+            .last-container {
+                display: flex;
+                width: 100%;
+                background: #FEFCEC;
+            }
+
             .last-section {
                 position: relative;
                 height: 60.5vw;
-                background: #FEFCEC;
+                width: 50%;
             }
             .last-image {
                 position: absolute;
@@ -169,45 +175,47 @@
                 width: 37.6vw;
                 height: auto;
             }
+            .right-section {
+                width: 50%;
+                height: 100%;
+                
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                
+                padding: 40px;
+                box-sizing: border-box;
+            }
             .we-offer-an-experience-beyond-jewelry {
-                position: absolute;
-                top: 4.9vw;
-                right: 12.3vw;
                 width: 34.4vw;
                 height: auto;
             }
             .last-section-first-text {
-                position: absolute;
-                top: 16.9vw;
-                right: 22.3vw;
+                margin-top: 2.2vw;
                 text-align: left;
                 font-family: 'Pretendard', sans-serif;
                 font-weight: 700;
                 font-style: normal;
-                font-size: 20px;
+                font-size: 24px;
                 letter-spacing: 0;
                 text-transform: uppercase;
                 color: #662423;
             }
             .last-section-text {
-                position: absolute;
-                top: 23vw;
-                right: 10.9vw;
+                margin-top: 2.4vw;
                 text-align: center;
                 font-family: 'Pretendard', sans-serif;
                 font-weight: 500;
                 font-style: normal;
-                font-size: 20px;
+                font-size: 24px;
                 line-height: 1.2;
                 letter-spacing: 0;
                 text-transform: uppercase;
                 color: #662423;
             }
             .request-button {
-                position: absolute;
-                top: 50vw;
-                right: 22.3vw;
-                display: block;
+                margin-top: 2.3vw;
                 display: flex;
                 justify-content: center;
                 align-items: center;
@@ -670,31 +678,35 @@
                 </div>
             </div>
         </div>
-        <div class="last-section">
-            <img src="images/lastImage.png" class="last-image desktop-image">
-            <img src="images/lastImageMobile.png" class="last-image mobile-image">
-            <img src="images/Where Jewelry Meets Meaning 2.png" class="we-offer-an-experience-beyond-jewelry">
-            <div class="last-section-first-text">
-                의미를 디자인하다. 매리드.
+        <div class="last-container">
+            <div class="last-section">
+                <img src="images/lastImage.png" class="last-image desktop-image">
+                <img src="images/lastImageMobile.png" class="last-image mobile-image">
             </div>
-            <div class="last-section-text">
-                매리드는 일상 속에서 가장 가까이 함께하는 주얼리에<br>
-                당신만의 스토리를 담는 가치를 소중히 생각합니다.<br>
-                <br>
-                AI 기반 커스터마이징 디자인툴을 통해 <br>
-                주얼리를 이루는 모든 요소를 고객이 스스로 선택할 수 있도록 하며,<br> 
-                기술과 장인정신을 결합해 단 하나의 작품으로 완성합니다.<br>
-                <br>
-                여러분이 직접 디자인한 주얼리는<br> 
-                일상에서 자연스럽게 착용할 수 있는 형태로 정성스럽게 구현되며,<br> 
-                그 자체로 당신의 순간과 감정을 기록하는 특별한 상징이 됩니다.<br>
-                <br>
-                고객만의 이야기를 담은 주얼리를 창조하는 일,<br> 
-                그것이 매리드의 약속이자 철학입니다.
+            <div class="right-section">
+                <img src="images/Where Jewelry Meets Meaning 2.png" class="we-offer-an-experience-beyond-jewelry">
+                <div class="last-section-first-text">
+                    의미를 디자인하다. 매리드.
+                </div>
+                <div class="last-section-text">
+                    매리드는 일상 속에서 가장 가까이 함께하는 주얼리에<br>
+                    당신만의 스토리를 담는 가치를 소중히 생각합니다.<br>
+                    <br>
+                    AI 기반 커스터마이징 디자인툴을 통해 <br>
+                    주얼리를 이루는 모든 요소를 고객이 스스로 선택할 수 있도록 하며,<br> 
+                    기술과 장인정신을 결합해 단 하나의 작품으로 완성합니다.<br>
+                    <br>
+                    여러분이 직접 디자인한 주얼리는<br> 
+                    일상에서 자연스럽게 착용할 수 있는 형태로 정성스럽게 구현되며,<br> 
+                    그 자체로 당신의 순간과 감정을 기록하는 특별한 상징이 됩니다.<br>
+                    <br>
+                    고객만의 이야기를 담은 주얼리를 창조하는 일,<br>
+                    그것이 매리드의 약속이자 철학입니다.
+                </div>
+                <a href="request.html" class="request-button">
+                    <img src="images/CHECK ALL SERVICES.png" class="check">
+                </a>
             </div>
-            <a href="request.html" class="request-button">
-                <img src="images/CHECK ALL SERVICES.png" class="check">
-            </a>
         </div>
         
         <script>
