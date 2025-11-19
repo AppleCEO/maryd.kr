@@ -774,14 +774,14 @@
                     
                     if (!isMerged) {
                         if (moveAmount >= mobileMeetingMoveAmount) {
-                        dcursiveImage.style.transform = `translateX(${mobileMeetingMoveAmount}px) translateY(120px)`;
-                        dgodicImage.style.transform = `translateX(-${mobileMeetingMoveAmount}px) translateY(120px)`;
-                        isMerged = true;
-                    } else {
-                        dcursiveImage.style.transform = `translateX(${moveAmount}px) translateY(${moveAmount/mobileMeetingMoveAmount*120}px)`;
-                        dgodicImage.style.transform = `translateX(-${moveAmount}px) translateY(${moveAmount/mobileMeetingMoveAmount*120}px)`;
-                    }
-                    } 
+                            dcursiveImage.style.transform = `translateX(${mobileMeetingMoveAmount}px) translateY(120px)`;
+                            dgodicImage.style.transform = `translateX(-${mobileMeetingMoveAmount}px) translateY(120px)`;
+                            isMerged = true;
+                        } else {
+                            dcursiveImage.style.transform = `translateX(${moveAmount}px) translateY(${moveAmount/mobileMeetingMoveAmount*120}px)`;
+                            dgodicImage.style.transform = `translateX(-${moveAmount}px) translateY(${moveAmount/mobileMeetingMoveAmount*120}px)`;
+                        }
+                    }       
                 
                 } else { // Desktop
                     const moveMultiplier = 6;
