@@ -109,8 +109,8 @@
             }
             .where-imagination-becomes-reality {
                 text-align: center;
-                margin-top: 3.2vw;
-                padding-bottom: 10.5vw;
+                margin-top: 12.7vw;
+                margin-bottom: 1vw;
             }
             .where-imagination-becomes-reality-image {
                 width: 23.3vw;
@@ -168,19 +168,21 @@
                 display: flex;
                 width: 100%;
                 background: #FEFCEC;
+                align-items: stretch;
             }
 
             .last-section {
-                position: relative;
-                height: 60.5vw;
-                width: 50%;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                box-sizing: border-box;
+                flex-shrink: 0;
             }
             .last-image {
-                position: absolute;
-                top: 3.8vw;
-                left: 4.2vw;
-                width: 37.6vw;
                 height: auto;
+                width: 80%;
+                object-fit: contain;
             }
             .right-section {
                 width: 50%;
@@ -500,19 +502,20 @@
                     background: #FEFCEC;
                 }
                 .last-section {
+                    width: 43%;
                     height: 425px;
                 }
 
                 .last-image {
                     position: absolute;
-                    top: 3.8vw;
+                    top: 1300px;
                     left: 4.2vw;
                     width: 37.6vw;
                     height: auto;
                 }
 
                 .right-section {
-                    width: 50%;
+                    width: 55%;
                     height: 100%;
                     padding: 5px;
                     display: flex;
@@ -524,7 +527,7 @@
                 }
 
                 .we-offer-an-experience-beyond-jewelry {
-                    margin-top: 54px;
+                    margin-top: 24px;
                     width: 120px;
                     height: auto;
                 }
@@ -547,9 +550,9 @@
 
                 .last-section-text {
                     position: absolute;
-                    top: 1520px;
+                    top: 1500px;
                     left: 5px;
-                    width: 98%;
+                    width: 97%;
                     
                     text-align: center;
                     font-family: 'Pretendard', sans-serif;
@@ -603,7 +606,7 @@
                     
 
                     font-family: 'Pretendard', sans-serif;
-                    font-weight: 300;
+                    font-weight: 500;
                     font-style: normal;
                     font-size: 8.68px;
                     line-height: 1.3;
@@ -733,7 +736,7 @@
         
             let desktopMeetingMoveAmount, mobileMeetingMoveAmount, endScroll, startScroll, videoContainerTop, finalScaleX, finalScaleY;
             let isMerged = false;
-        
+
             function calculateDimensions() {
                 if (!dgodicImage || !dcursiveImage || !videoContainer) return;
         
@@ -769,6 +772,9 @@
         
                 if (window.innerWidth <= 768) { // Mobile
                     const moveMultiplier = 2.5;
+                    if (scrollY < 0) {
+                        return;
+                    }
                     const moveAmount = scrollY * moveMultiplier;
                     
                     if (!isMerged) {
@@ -776,16 +782,15 @@
                         dcursiveImage.style.transform = `translateX(${mobileMeetingMoveAmount}px) translateY(120px)`;
                         dgodicImage.style.transform = `translateX(-${mobileMeetingMoveAmount}px) translateY(120px)`;
                         isMerged = true;
-                    } else {
-                        dcursiveImage.style.transform = `translateX(${moveAmount}px) translateY(${moveAmount/mobileMeetingMoveAmount*120}px)`;
-                        dgodicImage.style.transform = `translateX(-${moveAmount}px) translateY(${moveAmount/mobileMeetingMoveAmount*120}px)`;
+                        } else {
+                            dcursiveImage.style.transform = `translateX(${moveAmount}px) translateY(${moveAmount/mobileMeetingMoveAmount*120}px)`;
+                            dgodicImage.style.transform = `translateX(-${moveAmount}px) translateY(${moveAmount/mobileMeetingMoveAmount*120}px)`;
+                        }
                     }
-                    } 
-                
                 } else { // Desktop
-                    const moveMultiplier = 6;
+                    const moveMultiplier = 4;
                     const moveAmount = scrollY * moveMultiplier;
-                    const diagonalSlope = 0.5; 
+                    const diagonalSlope = 0.4; 
                     
                     if (scrollY <= endScroll) {
                         dcursiveImage.style.position = 'absolute';
@@ -816,20 +821,20 @@
                 if (window.innerWidth <= 768) {
                     video.style.transform = 'scale(1)';
                 } else {
-                    const moveAmount = scrollY * 5;
+                    const moveAmount = scrollY * 3;
                     const currentY = -moveAmount;
 
                     let progress = moveAmount / desktopMeetingMoveAmount;
                     if (progress > 1) progress = 1;
                     if (progress < 0) progress = 0;
-                    const maxScale = window.innerWidth / video.offsetWidth;
+                    const maxScale = 2;
                     const currentScale = 1 + (maxScale - 1) * progress;
 
 
                     if (moveAmount >= desktopMeetingMoveAmount) {
                         const finalY = -desktopMeetingMoveAmount;
                         video.style.transform = `scale(${maxScale})`; 
-                    } else {
+                    } else if (currentScale < maxScale) {
                         video.style.transform = `scale(${currentScale})`;
                     }
                 }
