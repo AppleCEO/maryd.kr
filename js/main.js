@@ -38,34 +38,39 @@ window.addEventListener('load', calculateDimensions);
 window.addEventListener('resize', calculateDimensions);
 
 window.addEventListener('scroll', () => {
-    const scrollY = window.scrollY;
-
-    if (isNaN(mobileMeetingMoveAmount) || isNaN(desktopMeetingMoveAmount)) {
-        return;
-    }
-
-    if (window.innerWidth <= 768) { // Mobile
-        const moveMultiplier = 2.5;
-        if (scrollY < 0) {
+    if (window.innerWidth <= 768) {
+        if (window.scrollY < 0) {
             return;
         }
+        moveLogoImageForMobile();
+    } else {
+        moveLogoImageForDesktop();
+    }
+
+    scalingVideo();
+    playParallax();
+
+    function moveLogoImageForMobile(moveMltiplier) {
+        const moveMultiplier = 2.5;
         const moveAmount = scrollY * moveMultiplier;
-        
+
         if (!isMerged) {
             if (moveAmount >= mobileMeetingMoveAmount) {
-            dcursiveImage.style.transform = `translateX(${mobileMeetingMoveAmount}px) translateY(120px)`;
-            dgodicImage.style.transform = `translateX(-${mobileMeetingMoveAmount}px) translateY(120px)`;
-            isMerged = true;
+                dcursiveImage.style.transform = `translateX(${mobileMeetingMoveAmount}px) translateY(120px)`;
+                dgodicImage.style.transform = `translateX(-${mobileMeetingMoveAmount}px) translateY(120px)`;
+                isMerged = true;
             } else {
-                dcursiveImage.style.transform = `translateX(${moveAmount}px) translateY(${moveAmount/mobileMeetingMoveAmount*120}px)`;
-                dgodicImage.style.transform = `translateX(-${moveAmount}px) translateY(${moveAmount/mobileMeetingMoveAmount*120}px)`;
+                dcursiveImage.style.transform = `translateX(${moveAmount}px) translateY(${moveAmount / mobileMeetingMoveAmount * 120}px)`;
+                dgodicImage.style.transform = `translateX(-${moveAmount}px) translateY(${moveAmount / mobileMeetingMoveAmount * 120}px)`;
             }
         }
-    } else { // Desktop
+    }
+
+    function moveLogoImageForDesktop() {
         const moveMultiplier = 4;
         const moveAmount = scrollY * moveMultiplier;
-        const diagonalSlope = 0.4; 
-        
+        const diagonalSlope = 0.4;
+
         if (scrollY <= endScroll) {
             dcursiveImage.style.position = 'absolute';
             dcursiveImage.style.top = 'calc(50% - 2.2vw)';
@@ -79,7 +84,7 @@ window.addEventListener('scroll', () => {
             dgodicImage.style.zIndex = 'auto';
 
             const currentY = -moveAmount * diagonalSlope;
-            
+
             if (moveAmount >= desktopMeetingMoveAmount) {
                 const finalY = -desktopMeetingMoveAmount * diagonalSlope;
                 dcursiveImage.style.transform = `translateX(${desktopMeetingMoveAmount}px) translateY(${finalY}px)`;
@@ -91,32 +96,34 @@ window.addEventListener('scroll', () => {
         }
     }
 
-    // Video scaling logic
-    if (window.innerWidth <= 768) {
-        video.style.transform = 'scale(1)';
-    } else {
-        const moveAmount = scrollY * 3;
-        const currentY = -moveAmount;
+    function scalingVideo() {
+        if (window.innerWidth <= 768) {
+            video.style.transform = 'scale(1)';
+        } else {
+            const moveAmount = scrollY * 3;
+            const currentY = -moveAmount;
 
-        let progress = moveAmount / desktopMeetingMoveAmount;
-        if (progress > 1) progress = 1;
-        if (progress < 0) progress = 0;
-        const maxScale = 2;
-        const currentScale = 1 + (maxScale - 1) * progress;
+            let progress = moveAmount / desktopMeetingMoveAmount;
+            if (progress > 1) progress = 1;
+            if (progress < 0) progress = 0;
+            const maxScale = 2;
+            const currentScale = 1 + (maxScale - 1) * progress;
 
 
-        if (moveAmount >= desktopMeetingMoveAmount) {
-            const finalY = -desktopMeetingMoveAmount;
-            video.style.transform = `scale(${maxScale})`; 
-        } else if (currentScale < maxScale) {
-            video.style.transform = `scale(${currentScale})`;
+            if (moveAmount >= desktopMeetingMoveAmount) {
+                const finalY = -desktopMeetingMoveAmount;
+                video.style.transform = `scale(${maxScale})`;
+            } else if (currentScale < maxScale) {
+                video.style.transform = `scale(${currentScale})`;
+            }
         }
     }
-    
-    // Parallax logic
-    parallaxImages.forEach((piece, index) => {
-        const speed = parallaxSpeedFactors[index] || 0;
-        const moveY = scrollY * speed;
-        piece.style.transform = `translateY(${moveY}px)`;
-    });
+
+    function playParallax() {
+        parallaxImages.forEach((piece, index) => {
+            const speed = parallaxSpeedFactors[index] || 0;
+            const moveY = scrollY * speed;
+            piece.style.transform = `translateY(${moveY}px)`;
+        });
+    }
 });
