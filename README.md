@@ -7,42 +7,44 @@ http://maryd.kr
 
 https://www.figma.com/design/lSR7e6mrnKEKPKxiWozJjn/매리드-웹디?node-id=15-2&t=KXQHda4t6xN0EugK-0
 
-Step1: 상단 화면 표시
+### Step1: 상단 화면 표시
 
 <img width="862" height="485" alt="image" src="https://github.com/user-attachments/assets/04cde55f-dcb7-4216-abf8-c4e54db764a8" />
 
-Step2: 초기 화면에서 아래로 스크롤하면 동영상을 전체 화면으로 표시
+### Step2: 초기 화면에서 아래로 스크롤하면 동영상을 전체 화면으로 표시
 
 <img width="862" height="485" alt="image" src="https://github.com/user-attachments/assets/48ccec9e-891f-42d8-b4b5-b2f49745ad88" />
 
-Step3: 레퍼런스 사이트를 참고해 아래로 스크롤하면 조금씩 가운데 영상이 커져서 전체 화면으로 표시
+### Step3: 레퍼런스 사이트를 참고해 아래로 스크롤하면 조금씩 가운데 영상이 커져서 전체 화면으로 표시
 
 레퍼런스 사이트 : https://bleedingdisorders.junction.care
 
-Step4: 영상에서 아래로 스크롤 시 사진이 보이는 화면을 구성
+### Step4: 영상에서 아래로 스크롤 시 사진이 보이는 화면을 구성
 
 <img width="862" height="485" alt="image" src="https://github.com/user-attachments/assets/e831dba0-6fbd-4097-81bd-db6a6d1c724a" />
 
-Step5: 레퍼런스 사이트를 참고해 사진이 위 아래로 움직이도록 구성
+### Step5: 레퍼런스 사이트를 참고해 사진이 위 아래로 움직이도록 구성
 
 https://www.ever.co.id/
 
-Step6: 사진 화면이 지나가면 가장 아래 화면을 구성
+### Step6: 사진 화면이 지나가면 가장 아래 화면을 구성
 
 <img width="862" height="634" alt="image" src="https://github.com/user-attachments/assets/23860fc8-a724-44e7-a676-38aaabd13dc1" />
 
-Step7: 아래 화면에서 CHECK ALL SERVICES 대신에 LET'S MARYD 텍스트를 표시하고 버튼 클릭 시 요청 페이지로 이동
+### Step7: 아래 화면에서 CHECK ALL SERVICES 대신에 LET'S MARYD 텍스트를 표시하고 버튼 클릭 시 요청 페이지로 이동
 
-Step8: 모바일에 맞춘 디자인 적용
+### Step8: 모바일에 맞춘 디자인 적용
 
 <img width="181" height="1024" alt="image" src="https://github.com/user-attachments/assets/24e342c5-8669-45c7-8f42-4932c7f44bfe" />
 
-Step9: 동생에게 피드백 받은 내용 개선
+### Step9: 동생에게 피드백 받은 내용 개선
 
-Step10: AI 개선(기존 pollinations는 품질이 낮고 프롬포트와 다른 이미지가 나와서 DALL-E 3로 변경)
+### Step10: AI 개선(기존 pollinations는 품질이 낮고 프롬포트와 다른 이미지가 나와서 DALL-E 3로 변경)
 
-Step11: request 페이지에 새로운 디자인을 피그마에 작업한 내용 반영
+### Step11: request 페이지에 피그마에 작업된 새로운 디자인을 반영
 
-Step12: CSS에 하드코딩된 px을 비율을 사용하는 vw로 변경하여 창 크기에 따라 피그마와 비율이 다른 이슈 수정 
+<img width="662" height="964" alt="image" src="https://github.com/user-attachments/assets/92804002-b406-48af-936e-eda1b52180db" />
 
-Step13: 리펙토링(파일 분리, 함수 분리, 코드 정리)
+### Step12: CSS에 하드코딩된 px을 비율을 사용하는 vw로 변경하여 창 크기에 따라 피그마와 비율이 다른 이슈 수정 
+
+### Step13: 리펙토링(파일 분리, 함수 분리, 코드 정리)
